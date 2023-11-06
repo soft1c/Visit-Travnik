@@ -83,7 +83,22 @@ app.get("/", (req, res) => {
     }
 })*/
 
+app.post('/admin',(req,res)=>{
+    const{username,password}=req.body;
+    if(username===adminUsername && password===adminPassword){
+        req.session.isAdmin=true;
+        res.redirect('/admin.html');
+    }else{
+        res.redirect('/admin_login.html');
+    }
+})
+
 app.get('/admin', (req, res) => {
+    if(req.session.isAdmin){
+        res.sendFile(path.join(__dirname,'public','admin.html'));
+    }else{
+        res.redirect('/admin_login.html');
+    }
     if (true) {
         baza.all('SELECT * FROM events', (err, events) => {
             if (err) {
