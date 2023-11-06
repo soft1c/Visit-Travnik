@@ -65,6 +65,60 @@
   fetchEventList();
 </script>
 
+<form action="/add_place" method="POST">
+  <h2>Add Place</h2>
+  <label for="placeName">Place Name:</label>
+  <input type="text" name="placeName" required>
+  <label for="placeType">Place Type:</label>
+  <select name="placeType">
+    <option value="restaurant">Restaurant</option>
+    <option value="park">Park</option>
+    <option value="religion">Religion</option>
+    <option value="history">History</option>
+    <option value="drinks">Drinks</option>
+  </select>
+  <input type="submit" value="Add Place">
+</form>
+
+
+<!-- Delete Place Form (admin.html) -->
+<form action="/delete_location" method="POST" id="deleteLocationForm">
+  <h2>Delete Location</h2>
+  <ul id="locationList">
+    <!-- The location list will be inserted here using JavaScript -->
+  </ul>
+  <input type="submit" value="Delete Location">
+</form>
+
+<script>
+  const locationListContainer = document.getElementById('locationList');
+
+  function createLocationListItem(location) {
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `
+    <input type="checkbox" name="location_ids[]" value="${location.id}">
+    ${location.name} (Type: ${location.type})
+  `;
+    return listItem;
+  }
+
+  function fetchLocationList() {
+    fetch('/places')
+            .then((response) => response.json())
+            .then((data) => {
+              locationListContainer.innerHTML = '';
+              data.lokacije.forEach((location) => {
+                locationListContainer.appendChild(createLocationListItem(location));
+              });
+            })
+            .catch((error) => {
+              console.error('Error fetching location data:', error);
+            });
+  }
+
+  fetchLocationList();
+</script>
+
 <!-- Logout Button -->
 <form action="/logout" method="POST">
   <input type="submit" value="Logout">

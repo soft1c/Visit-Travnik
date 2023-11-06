@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+<h1>Leave a Review</h1>
+
+<!-- Place List (Replace with JSON data) -->
+<div id="placeList">
+    <!-- Dynamic place list will be inserted here -->
+</div>
+
+<!-- Review Submission Form -->
+<div id="reviewForm">
+    <!-- Dynamic review submission form will be inserted here -->
+</div>
+
+<script>
+    // JavaScript code to fetch JSON data for places and populate the place list
+    fetch('/reviews')
+        .then(response => response.json())
+        .then(data => {
+            const placeList = document.getElementById('placeList');
+            // Replace this loop with code to dynamically generate place options
+            data.places.forEach(place => {
+                const option = document.createElement('option');
+                option.value = place.id;
+                option.textContent = place.name;
+                placeList.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching place data:', error);
+        });
+
+    // JavaScript code to handle review submission form (including image upload)
+    // You can implement this code to send data to the /submit_review route
+    // when the user submits the review.
+    // Make sure to validate and handle the form data properly.
+</script>
+</body>
+</html>
