@@ -174,11 +174,11 @@ app.post('/delete_event', (req, res) => {
 });
 
 app.post('/add_place', (req, res) => {
-    const { placeName, placeType } = req.body;
+    const { placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacijalan, lokacijalat, znacaj } = req.body;
 
     lokacije.run(
-        'INSERT INTO lokacije (name, tip) VALUES (?, ?)',
-        [placeName, placeType],
+        'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fast_food, kafa, pice, provod, lokacija_lang, lokacija_lat, turisticki_znacaj) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacijalan, lokacijalat, znacaj],
         (err) => {
             if (err) {
                 console.error(err);
@@ -189,6 +189,7 @@ app.post('/add_place', (req, res) => {
         }
     );
 });
+
 
 
 app.post('/delete_location', (req, res) => {
