@@ -92,6 +92,10 @@ app.post('/admin',(req,res)=>{
     }else{
         res.redirect('/admin_login.html');
     }
+});
+
+app.get('/preporuke',(req,res)=>{
+    res.sendFile(path.join(__dirname,'public', 'preporuka.html'));
 })
 
 app.get('/admin', (req, res) => {

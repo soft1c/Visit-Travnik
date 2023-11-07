@@ -1986,6 +1986,8 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+
+
 @media (min-width: 768px) {
   .dropdown .dropdown-menu {
     display: block;
@@ -2328,6 +2330,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .portfolio-area .filters-content .item img {
   border-radius: 10px;
+}
+
+.single-portfolio:hover .item {
+  border: 4px solid rgb(128, 128, 128);
+  border-radius: 13px;/* Gray border on hover */
+}
+
+.single-portfolio .item.selected {
+  border: 4px solid green;
+  border-radius :13px;/* Green border when selected */
 }
 
 .portfolio-area .filters-content .item .p-inner {
