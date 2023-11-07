@@ -2640,3 +2640,16 @@ h6 {
 .switch-wrap p {
   margin: 0;
 }
+ .centered-button {
+   text-align: center;
+   margin-top: 10px;
+ }
+
+.centered-button button {
+  padding: 20px 40px;
+  background-color: #007bff;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
