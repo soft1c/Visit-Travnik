@@ -19,6 +19,8 @@ const storage=multer.diskStorage({
     },
 });
 
+
+
 const upload=multer({storage:storage});
 
 
@@ -53,6 +55,7 @@ app.get('/events',(req,res)=>{
         }
     });
 });
+
 
 
 app.get('/public/img/:imageName', (req, res) => {
@@ -90,6 +93,8 @@ app.get('/admin', (req,res)=>{
         res.redirect('./admin_login.html');
     }
 })
+
+
 
 app.get("*", (req, res) => {
     return res.sendStatus(404)

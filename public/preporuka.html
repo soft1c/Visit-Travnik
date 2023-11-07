@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preporučujemo vam:</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .dzamija {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 10px;
+        }
+
+        .dzamija:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dzamija img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .dzamija .hotel-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .dzamija-info {
+            margin-left: 20px;
+        }
+
+        .dzamija h3 {
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .dzamija p {
+            line-height: 1.5;
+            color: #666;
+        }
+
+        .dzamija .location {
+            font-weight: bold;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .dzamija .directions-link {
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .filters ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .filters li {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .filters li.active {
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        .filters li:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 style="background-color: #333;">Preporučujemo vam</h1>
+</header>
+<div class="filters">
+    <ul>
+        <li class="active" data-filter="*">Sve</li>
+        <li data-filter=".hrana">Hrana</li>
+        <li data-filter=".pice">Piće</li>
+        <li data-filter=".historija">Historija</li>
+        <li data-filter=".priroda">Priroda</li>
+        <li data-filter=".religija">Religija</li>
+    </ul>
+</div>
+<main>
+    <div class="dzamija historija">
+        <div class="dzamija-content">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/%C5%A0arena_d%C5%BEamija.jpg" alt="">
+            <div class="dzamija-info">
+                <h3>Šarena džamija</h3>
+                <p>Godine 1757. u Travniku vezir Ćamil Ahmed-aga podiže džamiju na Donjoj Čaršiji, koju stanovnici mahom prozvaše Ćamilija.e</p>
+                <p>Šarena džamija (znana kao Sulejmanija), središnja je džamija Travničkog muftiluka.</p>
+            </div>
+        </div>
+    </div>
+</main>
+<main>
+    <div class="hotel historija">
+        <div class="hotel-content">
+            <img src="2023-07-12.jpg" alt="Tradicionalno jelo 1">
+            <div class="hotel-info">
+                <h3>Šarena džamija</h3>
+                <p>najbilja lepina.e</p>
+                <p>najbolji kajmak.</p>
+                <p class="directions-link">
+                    <a href="https://maps.app.goo.gl/Ezi4t3A5KfBPueCT6" target="_blank">Pronađi na mapi</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    // Add click event listeners to hotel divs
+    const dzamijaDivs = document.querySelectorAll('.dzamija');
+    dzamijaDivs.forEach(dzamija => {
+        dzamija.addEventListener('click', () => {
+            // You can define what happens when a hotel is clicked here, e.g., open a detailed view.
+            alert('You clicked on a dzamija!');
+        });
+    });
+</script>
+</body>
+</html>
