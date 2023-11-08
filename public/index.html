@@ -1,18 +1,12 @@
 	<!DOCTYPE html>
 	<html lang="ba" class="no-js">
 	<head>
-		<!-- Mobile Specific Meta -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Favicon-->
 		<link rel="shortcut icon" href="/img/fav.png">
 		<meta name="author" content="">
-		<!-- Meta Description -->
 		<meta name="description" content="">
-		<!-- Meta Keyword -->
 		<meta name="keywords" content="">
-		<!-- meta character set -->
 		<meta charset="UTF-8">
-		<!-- Site Title -->
 		<title>Visit Travnik</title>
         <link rel="icon" href="img/j.jpg" type="image/jpg">
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
@@ -28,8 +22,6 @@
 		</head>
 		<body>
 			<div class="portfolio-wrap">
-
-			<!-- Start Header Area -->
 			<header class="default-header">
 				<nav class="navbar navbar-expand-lg  navbar-light">
 					<div class="container">
@@ -39,7 +31,6 @@
 						  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						    <span class="text-white lnr lnr-menu"></span>
 						  </button>
-
 						  <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
 						    <ul class="navbar-nav">
 								<li><a href="Pages-inside/blog.html">Blogs</a></li>
@@ -51,8 +42,6 @@
 					</div>
 				</nav>
 			</header>
-			<!-- End Header Area -->	
-				<!-- start banner Area -->
 				<section class="banner-area relative" id="home">	
 					<div class="overlay overlay-bg"></div>
 					<div class="container">
@@ -67,9 +56,7 @@
 						</div>
 					</div>
 				</section>
-				<!-- End banner Area -->	
-				
-				<!-- Start portfolio-area Area -->	
+
 				<section class="portfolio-area section-gap" id="portfolio">
 				  <div class="container">
 						<div class="row d-flex justify-content-center">
@@ -80,7 +67,6 @@
 								</div>
 							</div>
 						</div>
-				    
 				    <div class="filters">
 				      <ul>
 				        <li class="active" data-filter="*">Sve</li>
@@ -91,7 +77,7 @@
 						  <li  data-filter=".religija">Religija</li>
 				      </ul>
 				    </div>
-				    
+
 				    <div class="filters-content">
 				      <div class="row grid">
 				        <div class="single-portfolio col-sm-4 all hrana">
@@ -233,8 +219,6 @@
 							  </div>
 						  </div>
 
-
-				    
 				  </div>
 					</div>
 
@@ -259,13 +243,10 @@
 						<div class="centered-button">
 							<button class="button-59" role="button" onclick="submitSelections()">Traži</button>
 						</div>
-
-
 					<script>
 						function toggleSelection(item){
 							item.classList.toggle("selected");
 						}
-
 						function submitSelections(){
 							let selectedItems = document.querySelectorAll('.item.selected');
 							if(selectedItems.length>0){
@@ -278,52 +259,130 @@
 
 				</section>
 
-				<h1>Dolazeći događaji</h1>
-				<!-- End portfolio-area Area -->	
-				<ul id="events-container">
+				<h3>Dolazeći događaji</h3>
 
 
-				</ul>
 
+
+
+
+
+				<div>
+					<h1>Dzamija</h1>
+				</div>
+
+
+
+
+
+				<section class="wrapper">
+					<div class="container" id="events-container">
+
+					</div>
+				</section>
 				<script>
-					function fetchAndDisplayEvents(){
+					function fetchAndDisplayEvents() {
 						fetch('/events')
 								.then(response => response.json())
-								.then(events=>{
+								.then(events => {
 									const eventsContainer = document.getElementById('events-container');
+									let currentRow;
 
-									events.forEach(event=>{
+									events.forEach((event, index) => {
+										if (index % 3 === 0) {
+											currentRow = document.createElement('div');
+											currentRow.className = 'row';
+											eventsContainer.appendChild(currentRow);
+										}
+
+										const colDiv = document.createElement('div');
+										colDiv.className = 'col-sm-12 col-md-6 col-lg-4 mb-4';
+
 										const eventCard = document.createElement('div');
-										eventCard.className = 'event-card';
+										eventCard.className = 'card text-dark card-has-bg click-col';
+										eventCard.style.backgroundImage = `url(${event.imageurl})`;
+
 										const eventImage = document.createElement('img');
+										eventImage.className = 'card-img d-none';
 										eventImage.src = event.imageurl;
-										console.log(event.imageurl);
 										eventImage.alt = 'Event Image';
 
+										const eventOverlay = document.createElement('div');
+										eventOverlay.className = 'card-img-overlay d-flex flex-column';
 
-										const eventName = document.createElement('h2');
-										eventName.textContent=event.name;
+										const eventBody = document.createElement('div');
+										eventBody.className = 'card-body';
 
-										const eventDate=document.createElement('p');
-										eventDate.textContent = `Date: ${event.date}`;
+										const eventMeta = document.createElement('small');
+										eventMeta.className = 'card-meta mb-2';
+										eventMeta.textContent = 'Thought Leadership';
+
+										const eventName = document.createElement('h4');
+										eventName.className = 'card-title mt-0';
+										const eventLink = document.createElement('a');
+										eventLink.className = 'text-dark';
+										eventLink.href = event.url;
+										eventLink.textContent = event.name;
+										eventName.appendChild(eventLink);
+
+										const eventDate = document.createElement('small');
+										eventDate.innerHTML = `<i class="far fa-clock"></i> ${event.date}`;
+
+										eventBody.appendChild(eventMeta);
+										eventBody.appendChild(eventName);
+										eventBody.appendChild(eventDate);
+										eventOverlay.appendChild(eventBody);
+
+										const cardFooter = document.createElement('div');
+										cardFooter.className = 'card-footer';
+										const media = document.createElement('div');
+										media.className = 'media';
+										const avatarImg = document.createElement('img');
+										avatarImg.className = 'mr-3 rounded-circle';
+										avatarImg.src = 'https://assets.codepen.io/460692/internal/avatars/users/default.png?format=auto&version=1688931977&width=80&height=80';
+										avatarImg.alt = 'Generic placeholder image';
+										avatarImg.style.maxWidth = '50px';
+										const mediaBody = document.createElement('div');
+										mediaBody.className = 'media-body';
+										const mediaTitle = document.createElement('h6');
+										mediaTitle.className = 'my-0 text-dark d-block';
+										mediaTitle.textContent = 'Oz Coruhlu';
+										const mediaSubtitle = document.createElement('small');
+										mediaSubtitle.textContent = 'Director of UI/UX';
+
+										mediaBody.appendChild(mediaTitle);
+										mediaBody.appendChild(mediaSubtitle);
+										media.appendChild(avatarImg);
+										media.appendChild(mediaBody);
+										cardFooter.appendChild(media);
 
 										eventCard.appendChild(eventImage);
-										eventCard.appendChild(eventName);
-										eventCard.appendChild(eventDate);
+										eventCard.appendChild(eventOverlay);
+										eventCard.appendChild(cardFooter);
 
-										eventsContainer.appendChild(eventCard);
-
-
+										colDiv.appendChild(eventCard);
+										currentRow.appendChild(colDiv);
 									});
 								})
-								.catch(error=>{
-									console.error("Error fetching events: ",error);
+								.catch(error => {
+									console.error("Error fetching events: ", error);
 								});
 					}
+
 					fetchAndDisplayEvents();
+
+
 				</script>
 
-				<!-- start footer Area -->		
+
+
+
+
+
+
+
+
+
 				<footer class="footer-area section-gap">
 					<div class="container">
 						<div class="row">
