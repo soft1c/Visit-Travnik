@@ -1293,3 +1293,14 @@ h1 {
   background: #ffba21;
   background: linear-gradient(0deg, rgba(255, 186, 33, 0.3785889355742297) 0%, rgba(255, 186, 33, 1) 100%);
 }
+ type="text/css">
+                      #google_translate_element {
+                        display: inline-block;
+                        margin-top: 20px;
+                      }
+.goog-te-combo {
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 4px;
+  background-color: #fff;
+}
