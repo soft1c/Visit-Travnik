@@ -72,7 +72,7 @@
 						<div class="row d-flex justify-content-center">
 							<div class="menu-content col-lg-10">
 								<div class="title text-center">
-									<h1 class="mb-10">Odaberite vaše preferncije:</h1>
+									<h1 class="mb-10" style="color:black">Odaberite vaše preferncije:</h1>
 									<p>Neki tekst nemam pojma</p>
 								</div>
 							</div>
@@ -255,18 +255,6 @@
 
 
 
-
-
-
-
-				<div>
-					<h1>Dzamija</h1>
-				</div>
-
-
-
-
-
 				<section class="wrapper">
 					<div class="container" id="events-container">
 
@@ -280,6 +268,7 @@
 									const eventsContainer = document.getElementById('events-container');
 									let currentRow;
 
+									// ...
 									events.forEach((event, index) => {
 										if (index % 3 === 0) {
 											currentRow = document.createElement('div');
@@ -291,12 +280,12 @@
 										colDiv.className = 'col-sm-12 col-md-6 col-lg-4 mb-4';
 
 										const eventCard = document.createElement('div');
-										eventCard.className = 'card text-dark card-has-bg click-col';
-										eventCard.style.backgroundImage = `url(${event.imageurl})`;
+										eventCard.className = 'card text-dark card-has-bg click-col event-card';
+										eventCard.style.backgroundImage = `url(${event.picture})`;
 
 										const eventImage = document.createElement('img');
 										eventImage.className = 'card-img d-none';
-										eventImage.src = event.imageurl;
+										eventImage.src = event.picture;
 										eventImage.alt = 'Event Image';
 
 										const eventOverlay = document.createElement('div');
@@ -308,22 +297,28 @@
 										const eventMeta = document.createElement('small');
 										eventMeta.className = 'card-meta mb-2';
 
-
 										const eventName = document.createElement('h4');
 										eventName.className = 'card-title mt-0';
 										const eventLink = document.createElement('a');
 										eventLink.className = 'text-dark';
 										eventLink.href = event.url;
 										eventLink.textContent = event.name;
+
 										eventName.appendChild(eventLink);
 
 										const eventDate = document.createElement('small');
-										eventDate.innerHTML = `<i class="far fa-clock"></i> ${event.date}`;
+										eventDate.innerHTML = `<i class="far fa-clock"></i> ${event.datum}`;
 
 										eventBody.appendChild(eventMeta);
 										eventBody.appendChild(eventName);
 										eventBody.appendChild(eventDate);
 										eventOverlay.appendChild(eventBody);
+
+
+										const eventDescription = document.createElement('p');
+										eventDescription.className ='event-description';
+										eventDescription.textContent = event.opis;
+										eventOverlay.appendChild(eventDescription);
 
 										const cardFooter = document.createElement('div');
 										cardFooter.className = 'card-footer';
@@ -355,6 +350,7 @@
 										colDiv.appendChild(eventCard);
 										currentRow.appendChild(colDiv);
 									});
+
 								})
 								.catch(error => {
 									console.error("Error fetching events: ", error);

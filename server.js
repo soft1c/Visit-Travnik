@@ -45,7 +45,7 @@ app.get('/recenzije',(req,res)=>{
 });
 
 app.get('/events',(req,res)=>{
-    baza.all('SELECT * FROM events',(err,rows)=>{
+    baza.all('SELECT * FROM dogadjaji',(err,rows)=>{
         if(err){
             console.error(err);
             res.status(500).send('Internal Server Error');
@@ -105,7 +105,7 @@ app.get('/admin', (req, res) => {
         res.redirect('/admin_login.html');
     }
     if (true) {
-        baza.all('SELECT * FROM events', (err, events) => {
+        baza.all('SELECT * FROM dogadjaji', (err, events) => {
             if (err) {
                 console.error(err);
                 res.status(500).send('Internal Server Error');
@@ -127,12 +127,12 @@ app.get('/admin', (req, res) => {
 });
 app.post('/add_event', upload.single('event_image'), (req, res) => {
     if (true) {
-        const { event_name, event_date } = req.body;
+        const { event_name, event_description, event_date } = req.body;
         const imageurl = req.file ? `public/img/${req.file.filename}` : '';
 
-        if (event_name && event_date && imageurl) {
-            const query = 'INSERT INTO events (name, date, imageurl) VALUES (?, ?, ?)';
-            const values = [event_name, event_date, imageurl];
+        if (event_name && event_date && imageurl && event_description) {
+            const query = 'INSERT INTO dogadjaji (name, opis, datum, picture) VALUES (?,?, ?, ?)';
+            const values = [event_name, event_description, event_date, imageurl];
 
             baza.run(query, values, (err) => {
                 if (err) {
@@ -156,7 +156,7 @@ app.post('/delete_event', (req, res) => {
         const event_id = req.body.event_id;
 
         if (event_id) {
-            const query = 'DELETE FROM events WHERE id = ?';
+            const query = 'DELETE FROM dogadjaji WHERE id = ?';
             baza.run(query, [event_id], (err) => {
                 if (err) {
                     console.error(err);
