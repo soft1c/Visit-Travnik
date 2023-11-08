@@ -119,35 +119,41 @@
   <input type="submit" value="Delete Event">
 </form>
 
-<!-- JavaScript for fetching and displaying event data -->
 <script>
   const eventListContainer = document.getElementById('eventList');
 
+  // Function to create a list item for an event
   function createEventListItem(event) {
     const listItem = document.createElement('li');
     listItem.innerHTML = `
-      <input type="checkbox" name="event_ids[]" value="${event.id}">
-      ${event.event_name} (Date: ${event.event_date})
-    `;
+            <input type="radio" name="event_id" value="${event.id}">
+            ${event.name} (${event.date})
+        `;
     return listItem;
   }
 
+  // Function to fetch event data from the server
   function fetchEventList() {
-    fetch('/delete_event')
-            .then((response) => response.json())
-            .then((data) => {
+    fetch('/events') // Assuming this route returns event data as JSON
+            .then(response => response.json())
+            .then(data => {
+              // Clear the existing list
               eventListContainer.innerHTML = '';
-              data.events.forEach((event) => {
+
+              // Create list items for each event and append them to the list
+              data.forEach(event => {
                 eventListContainer.appendChild(createEventListItem(event));
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.error('Error fetching event data:', error);
             });
   }
 
+  // Call the fetchEventList function when the page loads
   fetchEventList();
 </script>
+
 
 <!-- Add Place Form -->
 <form action="/add_place" method="POST">
