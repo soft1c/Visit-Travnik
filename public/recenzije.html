@@ -5,13 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviews</title>
     <style>
-        /* Add your CSS styles here */
+        .star-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px; /* Povećaj razmak između zvijezda i teksta */
+        }
+
+        .star-container {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .star-container.gold {
+            color: #ffd700; /* Zlatna boja */
+        }
+
+        .review-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .review {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+
+        .review p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .review-date {
+            color: #888;
+            font-size: 0.8em;
+        }
+
+        .review-form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .review-form h3 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+
+        .star-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .star-container {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .star-container.gold {
+            color: #ffd700; /* Zlatna boja */
+        }
     </style>
 </head>
 
 <body>
 <div class="review-form">
     <h3>Ostavi recenziju</h3>
+    <div class="form-group">
+        <label for="locationSearch">Pretraži lokacije:</label>
+        <input type="text" id="locationSearch" class="form-control" list="locationsList">
+        <datalist id="locationsList"></datalist>
+    </div>
+
     <div class="form-group">
         <label for="locationSelect">Odaberi lokaciju:</label>
         <select id="locationSelect" class="form-control">
@@ -39,77 +124,52 @@
 </div>
 
 
-<div class="review-container" id="reviewsContainer">
+<h1>Top Locations and Reviews</h1>
+<div id="topLocations"></div>
 
-</div>
-
-<style>
-    .star-group {
-        display: flex;
-        align-items: center;
-    }
-
-    .star-container {
-        font-size: 24px;
-        color: #ddd;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-
-    .star-container.gold {
-        color: #ffd700; /* Zlatna boja */
-    }
-
-    .review {
-        border-bottom: 1px solid #eee;
-        padding: 20px 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .review p {
-        margin: 0;
-        line-height: 1.5;
-    }
-
-    .review-author {
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .review-date {
-        color: #888;
-        font-size: 0.8em;
-    }
-
-    .review-image {
-        max-width: 100%;
-        height: auto;
-        margin-top: 10px;
-    }
-</style>
 
 <script>
-    function populateLocationDropdown() {
-        const locationSelect = document.getElementById('locationSelect');
+    const locationsData = [];
 
+    // Fetch locations from the server and populate the locationsData array
+    function fetchLocationsData() {
         fetch('/places')
             .then(response => response.json())
             .then(locations => {
-                locations.lokacije.forEach(location => {
-                    const option = document.createElement('option');
-                    option.value = location.id;
-                    option.textContent = location.name;
-                    locationSelect.appendChild(option);
-                });
+                console.log("Fetchano nesto");
+                locationsData.push(...locations.lokacije);
             })
             .catch(error => {
                 console.error('Error fetching locations:', error);
             });
     }
-    populateLocationDropdown();
+
+    // Function to populate the datalist with filtered locations
+    function filterLocations() {
+        const locationSearchInput = document.getElementById('locationSearch');
+        const datalist = document.getElementById('locationsList');
+
+        datalist.innerHTML = ''; // Clear the existing datalist options
+
+        const searchQuery = locationSearchInput.value.toLowerCase();
+
+        // Filter locations based on the search query and populate the datalist
+        locationsData.forEach(location => {
+            if (location.name.toLowerCase().includes(searchQuery)) {
+                const option = document.createElement('option');
+                option.value = location.name;
+                datalist.appendChild(option);
+            }
+        });
+    }
+
+    // Call the function to populate the locationsData array and set up the event listener
+    fetchLocationsData();
+
+    // Attach the filterLocations function to the input event
+    const locationSearchInput = document.getElementById('locationSearch');
+    locationSearchInput.addEventListener('input', filterLocations);
+
 
     const reviewsContainer = document.getElementById('reviewsContainer');
     const reviewText = document.getElementById('reviewText');
@@ -242,7 +302,52 @@
 
             reader.readAsDataURL(originalImage);
         });
+
     }
+    async function fetchTopLocationsAndReviews() {
+        console.log("Pokusaj fetchanja");
+        try {
+            const response = await fetch('/top_locations_and_reviews');
+            if (response.ok) {
+                const data = await response.json();
+                displayTopLocations(data.topLocations);
+            } else {
+                console.error('Failed to fetch top locations and reviews');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Function to display top locations and their average ratings
+    function displayTopLocations(topLocations) {
+        const topLocationsContainer = document.getElementById('topLocations');
+
+        for (const type in topLocations) {
+            const typeHeader = document.createElement('h2');
+            typeHeader.textContent = type;
+            topLocationsContainer.appendChild(typeHeader);
+
+            topLocations[type].forEach(location => {
+                const locationDiv = document.createElement('div');
+                locationDiv.classList.add('location');
+
+                const nameHeader = document.createElement('h3');
+                nameHeader.textContent = location.name;
+
+                const avgRatingParagraph = document.createElement('p');
+                avgRatingParagraph.textContent = `Average Rating: ${location.avg_rating.toFixed(2)}`;
+
+                locationDiv.appendChild(nameHeader);
+                locationDiv.appendChild(avgRatingParagraph);
+
+                topLocationsContainer.appendChild(locationDiv);
+            });
+        }
+    }
+
+    // Fetch top locations and reviews when the page loads
+    fetchTopLocationsAndReviews();
 
 </script>
 

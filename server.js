@@ -10,7 +10,12 @@ let baza=new sqlite3.Database('dogadjaji.db');
 let lokacije=new sqlite3.Database('lokacije.db');
 let recenzije=new sqlite3.Database('recenzije.db');
 const app = express()
+
+
 app.use(express.static('public'));
+app.use(session({secret:'your_secret_key',resave: false, saveUninitialized:true}));
+app.use(bodyParser.urlencoded({extended:true}));
+app.use('/css/public/fonts', express.static(path.join(__dirname, 'public', 'fonts')));
 
 const storage=multer.diskStorage({
     destination:function(req,file,cb){
@@ -23,23 +28,14 @@ const storage=multer.diskStorage({
 
 const upload=multer({storage:storage});
 
-
-
 const server = app.listen(3000, () => { // create a HTTP server on port 3000
     console.log(`Express running → PORT ${server.address().port}`)
 });
 
 
-
-app.use(session({secret:'your_secret_key',resave: false, saveUninitialized:true}));
-
-app.use(bodyParser.urlencoded({extended:true}));
-
 const adminUsername='user';
 const adminPassword='password';
 let adminLogged=false;
-
-
 
 app.get('/recenzije',(req,res)=>{
     res.redirect("/recenzije.html");
@@ -47,7 +43,7 @@ app.get('/recenzije',(req,res)=>{
 
 app.get('/events',(req,res)=>{
     baza.all('SELECT * FROM dogadjaji',(err,rows)=>{
-        if(err){
+    if(err){
             console.error(err);
             res.status(500).send('Internal Server Error');
         }else{
@@ -62,7 +58,7 @@ app.get('/public/img/:imageName', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'img', imageName));
 });
 
-app.use('/css/public/fonts', express.static(path.join(__dirname, 'public', 'fonts')));
+
 
 app.post('/public/img',upload.single('fileToUpload'),(req,res)=>{
     if(!req.file){
@@ -269,6 +265,53 @@ app.get('/places', (req,res)=>{
             res.json({lokacije:lokacije});
     });
 });
+
+app.get('/top_locations_and_reviews', (req, res) => {
+    const locationTypes = ['hrana', 'piće', 'historija', 'priroda', 'religija'];
+    const topLocations = {};
+
+    locationTypes.forEach(type => {
+        lokacije.all(
+            'SELECT * FROM lokacije WHERE tip = ?',
+            [type],
+            (err, locationRows) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    // Izračunaj prosječnu ocjenu za svaku lokaciju iz tabele recenzija
+                    const locations = locationRows;
+                    const locationIds = locations.map(location => location.id);
+
+                    recenzije.all(
+                        'SELECT lokacija_id, AVG(ocjena) AS avg_rating FROM neodobreneRecenzije WHERE lokacija_id =',
+                        (err, ratingRows) => {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                // Stvori mapping lokacija prema prosječnim ocjenama
+                                const locationRatings = {};
+                                ratingRows.forEach(row => {
+                                    locationRatings[row.lokacija_id] = row.avg_rating;
+                                });
+
+                                // Sortiraj lokacije po prosječnoj ocjeni i odaberi top 3
+                                locations.sort((a, b) => {
+                                    return (locationRatings[b.id] || 0) - (locationRatings[a.id] || 0);
+                                });
+                                topLocations[type] = locations.slice(0, 3);
+                                if (Object.keys(topLocations).length === locationTypes.length) {
+                                    res.json({ topLocations });
+                                }
+                            }
+                        }
+                    );
+                }
+            }
+        );
+    });
+});
+
+
 app.get("*", (req, res) => {
     return res.sendStatus(404)
 })
