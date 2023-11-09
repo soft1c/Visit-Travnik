@@ -8,41 +8,244 @@
         /* Add your CSS styles here */
     </style>
 </head>
+
 <body>
-<h1>Leave a Review</h1>
-
-<!-- Place List (Replace with JSON data) -->
-<div id="placeList">
-    <!-- Dynamic place list will be inserted here -->
+<div class="review-form">
+    <h3>Ostavi recenziju</h3>
+    <div class="form-group">
+        <label for="locationSelect">Odaberi lokaciju:</label>
+        <select id="locationSelect" class="form-control">
+            <option value="">Odaberi lokaciju</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="reviewText">Tekst recenzije:</label>
+        <textarea id="reviewText" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="form-group star-group" id="star-group">
+        <label>Ocjena: <span id="selectedRating">0</span></label>
+        <!-- Zamijenjeni odabir ocjene sa zvjezdicama -->
+        <div class="star-container" data-rating="1">&#9733;</div>
+        <div class="star-container" data-rating="2">&#9733;</div>
+        <div class="star-container" data-rating="3">&#9733;</div>
+        <div class="star-container" data-rating="4">&#9733;</div>
+        <div class="star-container" data-rating="5">&#9733;</div>
+    </div>
+    <div class="form-group">
+        <label for="reviewImage">Dodaj sliku (opcionalno):</label>
+        <input type="file" id="reviewImage" accept="image/*">
+    </div>
+    <button class="btn-primary" onclick="submitReview()">Pošalji recenziju</button>
 </div>
 
-<!-- Review Submission Form -->
-<div id="reviewForm">
-    <!-- Dynamic review submission form will be inserted here -->
+
+<div class="review-container" id="reviewsContainer">
+
 </div>
+
+<style>
+    .star-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .star-container {
+        font-size: 24px;
+        color: #ddd;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .star-container.gold {
+        color: #ffd700; /* Zlatna boja */
+    }
+
+    .review {
+        border-bottom: 1px solid #eee;
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .review p {
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .review-author {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .review-date {
+        color: #888;
+        font-size: 0.8em;
+    }
+
+    .review-image {
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+    }
+</style>
 
 <script>
-    // JavaScript code to fetch JSON data for places and populate the place list
-    fetch('/reviews')
-        .then(response => response.json())
-        .then(data => {
-            const placeList = document.getElementById('placeList');
-            // Replace this loop with code to dynamically generate place options
-            data.places.forEach(place => {
-                const option = document.createElement('option');
-                option.value = place.id;
-                option.textContent = place.name;
-                placeList.appendChild(option);
+    function populateLocationDropdown() {
+        const locationSelect = document.getElementById('locationSelect');
+
+        fetch('/places')
+            .then(response => response.json())
+            .then(locations => {
+                locations.lokacije.forEach(location => {
+                    const option = document.createElement('option');
+                    option.value = location.id;
+                    option.textContent = location.name;
+                    locationSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching locations:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error fetching place data:', error);
+    }
+    populateLocationDropdown();
+
+    const reviewsContainer = document.getElementById('reviewsContainer');
+    const reviewText = document.getElementById('reviewText');
+    const starContainers = document.querySelectorAll('.star-container');
+    const reviewImageInput = document.getElementById('reviewImage');
+    let selectedRating = 0;
+
+    starContainers.forEach(container => {
+        container.addEventListener('mouseenter', function () {
+            const rating = container.dataset.rating;
+            highlightStars(rating);
         });
 
-    // JavaScript code to handle review submission form (including image upload)
-    // You can implement this code to send data to the /submit_review route
-    // when the user submits the review.
-    // Make sure to validate and handle the form data properly.
+        container.addEventListener('mouseleave', function () {
+            if (!selectedRating) {
+                removeHighlights();
+            }
+        });
+
+        container.addEventListener('click', function () {
+            const rating = container.dataset.rating;
+            selectedRating = rating;
+            highlightStars(rating);
+            document.getElementById('selectedRating').textContent = rating;
+        });
+    });
+
+    function highlightStars(rating) {
+        starContainers.forEach(container => {
+            const containerRating = container.dataset.rating;
+            if (containerRating <= rating) {
+                container.classList.add('gold');
+            } else {
+                container.classList.remove('gold');
+            }
+        });
+    }
+
+    function removeHighlights() {
+        starContainers.forEach(container => {
+            container.classList.remove('gold');
+        });
+    }
+
+    function submitReview() {
+        const reviewText = document.getElementById('reviewText').value;
+        const selectedRating = document.getElementById('selectedRating').textContent;
+        const reviewImage = document.getElementById('reviewImage').files[0];
+
+        const formData = new FormData();
+        formData.append('reviewText', reviewText);
+        formData.append('selectedRating', selectedRating);
+        if (reviewImage) {
+            formData.append('reviewImage', reviewImage);
+        }
+
+        fetch('/submit_review', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+
+            });
+    }
+
+    function createReviewElement(review) {
+        const reviewElement = document.createElement('div');
+        reviewElement.classList.add('review');
+
+        const authorElement = document.createElement('div');
+        authorElement.classList.add('review-author');
+        authorElement.textContent = review.author;
+
+        const ratingElement = document.createElement('div');
+        ratingElement.innerHTML = `Ocjena: <span class="gold">${review.rating}</span>`;
+        ratingElement.classList.add('review-rating');
+
+        const contentParagraph = document.createElement('p');
+        contentParagraph.textContent = review.content;
+
+        const dateElement = document.createElement('div');
+        dateElement.classList.add('review-date');
+        dateElement.textContent = review.date;
+
+        reviewElement.appendChild(authorElement);
+        reviewElement.appendChild(ratingElement);
+        reviewElement.appendChild(contentParagraph);
+        reviewElement.appendChild(dateElement);
+
+        if (review.image) {
+            const imageElement = document.createElement('img');
+            imageElement.src = review.image;
+            imageElement.alt = 'Recenzija slika';
+            imageElement.classList.add('review-image');
+            reviewElement.appendChild(imageElement);
+        }
+
+        return reviewElement;
+    }
+    function resizeImage(originalImage, targetWidth) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                const img = new Image();
+                img.src = event.target.result;
+
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const scaleFactor = targetWidth / img.width;
+                    const targetHeight = img.height * scaleFactor;
+
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+                    canvas.toBlob((blob) => {
+                        resolve(blob);
+                    });
+                };
+            };
+
+            reader.readAsDataURL(originalImage);
+        });
+    }
+
 </script>
+
+
 </body>
 </html>

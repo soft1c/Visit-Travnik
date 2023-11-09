@@ -8,6 +8,7 @@ const sqlite3=require('sqlite3');
 
 let baza=new sqlite3.Database('dogadjaji.db');
 let lokacije=new sqlite3.Database('lokacije.db');
+let recenzije=new sqlite3.Database('recenzije.db');
 const app = express()
 app.use(express.static('public'));
 
@@ -41,7 +42,7 @@ let adminLogged=false;
 
 
 app.get('/recenzije',(req,res)=>{
-    res.sendFile("./recenzije.html");
+    res.redirect("/recenzije.html");
 });
 
 app.get('/events',(req,res)=>{
@@ -185,6 +186,27 @@ app.post('/add_place', (req, res) => {
                 res.status(500).json({ error: 'Error adding place' });
             } else {
                 res.redirect('/admin.html'); // Redirect to the admin page after adding the place
+            }
+        }
+    );
+});
+
+
+app.post('/submit_review', upload.single('reviewImage'), (req, res) => {
+    const { reviewText, selectedRating, selectedLocationId } = req.body;
+    const reviewImage = req.file ? `public/img/${req.file.filename}` : '';
+
+    // Insert the review data into the database
+    recenzije.run(
+        'INSERT INTO neodobreneRecenzije (lokacija_id, ocjena, tekst, slika) VALUES (?, ?, ?, ?)',
+        [selectedLocationId, selectedRating, reviewText, reviewImage],
+        (err) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Error adding review' });
+            } else {
+                console.log('Review added successfully');
+                res.json({ message: 'Review added successfully' });
             }
         }
     );
