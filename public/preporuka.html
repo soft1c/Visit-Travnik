@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,6 +24,29 @@
             margin: 0;
         }
 
+        .filters {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .filters ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .filters li {
+            display: inline-block;
+            margin-right: 10px;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+        .filters li.active {
+            color: #007bff;
+        }
+
         main {
             max-width: 800px;
             margin: 20px auto;
@@ -38,7 +62,7 @@
             padding-bottom: 10px;
         }
 
-        .dzamija {
+        .item-container {
             margin: 20px 0;
             border: 1px solid #ddd;
             padding: 10px;
@@ -48,77 +72,92 @@
             border-radius: 10px;
         }
 
-        .dzamija:hover {
+        .item-container:hover {
             transform: scale(1.02);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
-        .dzamija img {
+        .item-container img {
             max-width: 100%;
             border: 1px solid #ddd;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
 
-        .dzamija .dzamija-content {
+        .item-content {
             display: flex;
             align-items: center;
         }
 
-        .dzamija-info {
+        .item-info {
             margin-left: 20px;
         }
 
-        .dzamija h3 {
+        .item-info h3 {
             margin-top: 10px;
             color: #333;
         }
 
-        .dzamija p {
+        .item-info p {
             line-height: 1.5;
             color: #666;
         }
 
-        .dzamija .location {
+        .item-info .location {
             font-weight: bold;
             color: #555;
             margin-top: 10px;
         }
 
-        .dzamija .directions-link {
+        .item-info .directions-link {
             color: #007bff;
             text-decoration: underline;
             cursor: pointer;
         }
 
-        .filters ul {
-            list-style: none;
-            padding: 0;
-            text-align: center;
+        .historija .item-container {
+            border: 1px solid #a0a0a0;
+            background-color: #f2f2f2;
         }
 
-        .filters li {
-            display: inline-block;
-            padding: 5px 10px;
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: background-color 0.3s;
+        .historija .item-container:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .filters li.active {
-            background-color: #f7f7f7;
-            color: #333;
+
+        @media (max-width: 736px) {
+            .filters ul {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                margin-bottom: 0;
+            }
+
+            .filters li {
+                margin-right: 10px;
+                padding: 6px 6px;
+                white-space: nowrap;
+            }
+
+            .filters-content {
+                margin-top: 20px;
+            }
+
+            .item-container {
+                width: 100%;
+            }
         }
 
-        .filters li:hover {
-            background-color: #444;
-        }
+
+
+
+
+
     </style>
 </head>
+
 <body>
 <header>
-    <h1 style="background-color: #333;">Preporučujemo vam</h1>
+    <h1>Preporučujemo vam</h1>
 </header>
 <div class="filters">
     <ul>
@@ -131,10 +170,10 @@
     </ul>
 </div>
 <main>
-    <div class="dzamija historija">
-        <div class="dzamija-content">
+    <div class="historija item-container" onclick="location.href='link-do-posebne-stranice.html';" style="cursor: pointer;">
+        <div class="item-content">
             <img src="public/img/Šarena_džamija.jpg" alt="" width="200" height="150">
-            <div class="dzamija-info">
+            <div class="item-info">
                 <h3>Šarena džamija</h3>
                 <p>Godine 1757. u Travniku vezir Ćamil Ahmed-aga podiže džamiju na Donjoj Čaršiji, koju stanovnici mahom prozvaše Ćamilija.e</p>
                 <p>Šarena džamija (znana kao Sulejmanija), središnja je džamija Travničkog muftiluka.</p>
@@ -143,13 +182,13 @@
     </div>
 </main>
 <main>
-    <div class="hotel historija">
-        <div class="hotel-content">
+    <div class="item-container">
+        <div class="item-content">
             <img src="public/img/hari-0014.jpg" alt="" width="200" height="150">
-            <div class="hotel-info">
-                <h3>Šarena džamija</h3>
-                <p>najbilja lepina.e</p>
-                <p>najbolji kajmak.</p>
+            <div class="item-info">
+                <h3>Hari Ćevabdžinica</h3>
+                <p>Najbolja lepota.e</p>
+                <p>Najbolji kajmak.</p>
                 <p class="directions-link">
                     <a href="https://maps.app.goo.gl/Ezi4t3A5KfBPueCT6" target="_blank">Pronađi na mapi</a>
                 </p>
@@ -157,15 +196,6 @@
         </div>
     </div>
 </main>
-<script>
-    // Add click event listeners to hotel divs
-    const dzamijaDivs = document.querySelectorAll('.dzamija');
-    dzamijaDivs.forEach(dzamija => {
-        dzamija.addEventListener('click', () => {
-            // You can define what happens when a hotel is clicked here, e.g., open a detailed view.
-            alert('You clicked on a dzamija!');
-        });
-    });
-</script>
 </body>
+
 </html>
