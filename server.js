@@ -61,6 +61,8 @@ app.get('/public/img/:imageName', (req, res) => {
 
 
 
+
+
 app.post('/public/img',upload.single('fileToUpload'),(req,res)=>{
     if(!req.file){
         return res.status(400).send("File nije uploadovan");
@@ -447,7 +449,8 @@ app.post('/azuriraj_ocjene', async (req, res) => {
 
 app.get('/search-results',(req,res)=>{
     let preferencije=req.query.preference;
-    //proracun
+    console.log(preferencije);
+    for_each()
 
     res.redirect('/preporuka.html');
 })
