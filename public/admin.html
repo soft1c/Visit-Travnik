@@ -84,6 +84,37 @@
       display: inline-block;
       vertical-align: middle;
     }
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ccc;
+      margin: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    .recenzije-list {
+      margin-top: 10px;
+    }
+
+    .btn-approve,
+    .btn-delete,
+    .update-btn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .btn-approve:hover,
+    .btn-delete:hover,
+    .update-btn:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -215,10 +246,63 @@
   <input type="submit" value="Delete Location">
 </form>
 
-<div id="neodobreneRecenzije"></div>
+<div id="neodobreneRecenzije" class="form-container">
+  <h2>Neodobrene Recenzije</h2>
 
-<button onclick="azurirajOcjeneBackend()">Ažuriraj ocjene</button>
+  <div id="recenzijeList" class="recenzije-list">
+    <!-- Recenzije će biti umetnute ovdje koristeći JavaScript -->
+  </div>
 
+  <button onclick="azurirajOcjeneBackend()" class="update-btn">Ažuriraj ocjene</button>
+</div>
+
+<!-- JavaScript for fetching and displaying recenzije data -->
+<script>
+  const recenzijeListContainer = document.getElementById('recenzijeList');
+
+  function createRecenzijaItem(recenzija) {
+    const recenzijaItem = document.createElement('div');
+    recenzijaItem.innerHTML = `
+      <p>ID: ${recenzija.id}</p>
+      <p>Recenzija: ${recenzija.tekst}</p>
+      <button class="btn-approve" data-id="${recenzija.id}" onclick="odobriRecenziju(${recenzija.id})">Odobri</button>
+      <button class="btn-delete" data-id="${recenzija.id}" onclick="obrisiRecenziju(${recenzija.id})">Obriši</button>
+      <hr>
+    `;
+    return recenzijaItem;
+  }
+
+  function displayRecenzije(recenzije) {
+    recenzijeListContainer.innerHTML = '';
+
+    recenzije.forEach(recenzija => {
+      recenzijeListContainer.appendChild(createRecenzijaItem(recenzija));
+    });
+  }
+
+  async function fetchNeodobreneRecenzije() {
+    try {
+      const response = await fetch('/neodobreneRecenzije');
+      if (response.ok) {
+        const neodobreneRecenzije = await response.json();
+        displayRecenzije(neodobreneRecenzije);
+      } else {
+        console.error('Error fetching neodobrene recenzije:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching neodobrene recenzije:', error);
+    }
+  }
+
+  // Dohvati neodobrene recenzije prilikom učitavanja stranice
+  fetchNeodobreneRecenzije();
+</script>
+
+<!-- Add Place Form -->
+<!-- Tvoj postojeći kod ostaje nepromijenjen -->
+
+<!-- Delete Place Form -->
+<!-- Tvoj postojeći kod ostaje nepromijenjen -->
 
 <!-- JavaScript for fetching and displaying location data -->
 <script>
@@ -247,83 +331,8 @@
             });
   }
 
+  // Call the fetchLocationList function when the page loads
   fetchLocationList();
-  async function fetchNeodobreneRecenzije() {
-    try {
-      const response = await fetch('/neodobreneRecenzije');
-      if (response.ok) {
-        const neodobreneRecenzije = await response.json();
-        displayNeodobreneRecenzije(neodobreneRecenzije);
-      } else {
-        console.error('Error fetching neodobrene recenzije:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching neodobrene recenzije:', error);
-    }
-  }
-
-  function displayNeodobreneRecenzije(recenzije) {
-    const neodobreneRecenzijeContainer = document.getElementById('neodobreneRecenzije');
-    neodobreneRecenzijeContainer.innerHTML = '';
-
-    recenzije.forEach(recenzija => {
-      const recenzijaElement = document.createElement('div');
-      recenzijaElement.innerHTML = `
-          <p>ID: ${recenzija.id}</p>
-          <p>Recenzija: ${recenzija.tekst}</p>
-          <button class="btn-approve" data-id="${recenzija.id}" onclick="odobriRecenziju(${recenzija.id})">Odobri</button>
-          <button class="btn-delete" data-id="${recenzija.id}" onclick="obrisiRecenziju(${recenzija.id})">Obriši</button>
-          <hr>
-        `;
-      neodobreneRecenzijeContainer.appendChild(recenzijaElement);
-    });
-  }
-
-
-  async function obrisiRecenziju(recenzijaId) {
-    try {
-      const response = await fetch(`/obrisi_recenziju/${recenzijaId}`, { method: 'DELETE' });
-      if (response.ok) {
-        console.log('Recenzija je obrisana.');
-        // Osvježi prikaz recenzija ili ukloni HTML element za ovu recenziju
-        fetchNeodobreneRecenzije();
-      } else {
-        console.error('Greška pri brisanju recenzije:', response.status);
-      }
-    } catch (error) {
-      console.error('Greška pri brisanju recenzije:', error);
-    }
-  }
-
-  async function odobriRecenziju(recenzijaId) {
-    try {
-      const response = await fetch(`/odobri_recenziju/${recenzijaId}`, { method: 'POST' });
-      if (response.ok) {
-        console.log('Recenzija je odobrena.');
-        // Osvježi prikaz recenzija ili ukloni HTML element za ovu recenziju
-        fetchNeodobreneRecenzije();
-      } else {
-        console.error('Greška pri odobravanju recenzije:', response.status);
-      }
-    } catch (error) {
-      console.error('Greška pri odobravanju recenzije:', error);
-    }
-  }
-
-  // Dohvati neodobrene recenzije prilikom učitavanja stranice
-  fetchNeodobreneRecenzije();
-  async function azurirajOcjeneBackend() {
-    try {
-      const response = await fetch('/azuriraj_ocjene', {method: 'POST'});
-      if (response.ok) {
-        console.log('Ocjene su uspješno ažurirane.');
-      } else {
-        console.error('Greška pri ažuriranju ocjena:', response.status);
-      }
-    } catch (error) {
-      console.error('Greška pri ažuriranju ocjena:', error);
-    }
-  }
 </script>
 
 <!-- Logout Button -->
