@@ -172,12 +172,13 @@ app.post('/delete_event', (req, res) => {
 });
 
 app.post('/add_place', (req, res) => {
-    const { placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacija, znacaj } = req.body;
+    const { placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fastfood, kafa, pice, provod, lokacija, turisticki_znacaj } = req.body;
+    console.log(req.body);
     let ocjena_pocetna=0;
     console.log(lokacija);
     lokacije.run(
         'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fast_food, kafa, pice, provod, lokacija, turisticki_znacaj, ocjena) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)',
-        [placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacija, znacaj,ocjena_pocetna],
+        [placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fastfood, kafa, pice, provod, lokacija, turisticki_znacaj,ocjena_pocetna],
         (err) => {
             if (err) {
                 console.error(err);
