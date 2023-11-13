@@ -216,6 +216,9 @@
   <input type="submit" value="Delete Location">
 </form>
 
+<div id="neodobreneRecenzije"></div>
+
+
 <!-- JavaScript for fetching and displaying location data -->
 <script>
   const locationListContainer = document.getElementById('locationList');
@@ -244,6 +247,70 @@
   }
 
   fetchLocationList();
+  async function fetchNeodobreneRecenzije() {
+    try {
+      const response = await fetch('/neodobreneRecenzije');
+      if (response.ok) {
+        const neodobreneRecenzije = await response.json();
+        displayNeodobreneRecenzije(neodobreneRecenzije);
+      } else {
+        console.error('Error fetching neodobrene recenzije:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching neodobrene recenzije:', error);
+    }
+  }
+
+  function displayNeodobreneRecenzije(recenzije) {
+    const neodobreneRecenzijeContainer = document.getElementById('neodobreneRecenzije');
+    neodobreneRecenzijeContainer.innerHTML = '';
+
+    recenzije.forEach(recenzija => {
+      const recenzijaElement = document.createElement('div');
+      recenzijaElement.innerHTML = `
+          <p>ID: ${recenzija.id}</p>
+          <p>Recenzija: ${recenzija.tekst}</p>
+          <button class="btn-approve" data-id="${recenzija.id}" onclick="odobriRecenziju(${recenzija.id})">Odobri</button>
+          <button class="btn-delete" data-id="${recenzija.id}" onclick="obrisiRecenziju(${recenzija.id})">Obriši</button>
+          <hr>
+        `;
+      neodobreneRecenzijeContainer.appendChild(recenzijaElement);
+    });
+  }
+
+
+  async function obrisiRecenziju(recenzijaId) {
+    try {
+      const response = await fetch(`/obrisi_recenziju/${recenzijaId}`, { method: 'DELETE' });
+      if (response.ok) {
+        console.log('Recenzija je obrisana.');
+        // Osvježi prikaz recenzija ili ukloni HTML element za ovu recenziju
+        fetchNeodobreneRecenzije();
+      } else {
+        console.error('Greška pri brisanju recenzije:', response.status);
+      }
+    } catch (error) {
+      console.error('Greška pri brisanju recenzije:', error);
+    }
+  }
+
+  async function odobriRecenziju(recenzijaId) {
+    try {
+      const response = await fetch(`/odobri_recenziju/${recenzijaId}`, { method: 'POST' });
+      if (response.ok) {
+        console.log('Recenzija je odobrena.');
+        // Osvježi prikaz recenzija ili ukloni HTML element za ovu recenziju
+        fetchNeodobreneRecenzije();
+      } else {
+        console.error('Greška pri odobravanju recenzije:', response.status);
+      }
+    } catch (error) {
+      console.error('Greška pri odobravanju recenzije:', error);
+    }
+  }
+
+  // Dohvati neodobrene recenzije prilikom učitavanja stranice
+  fetchNeodobreneRecenzije();
 </script>
 
 <!-- Logout Button -->

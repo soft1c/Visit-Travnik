@@ -9,6 +9,7 @@ const sqlite3=require('sqlite3');
 let baza=new sqlite3.Database('dogadjaji.db');
 let lokacije=new sqlite3.Database('lokacije.db');
 let recenzije=new sqlite3.Database('recenzije.db');
+let neodobreneRecenzije=new sqlite3.Database('neodobreneRecenzije.db');
 const app = express()
 
 
@@ -197,7 +198,7 @@ app.post('/submit_review', upload.single('reviewImage'), (req, res) => {
     console.log(reviewImage);
 
     // Insert the review data into the database
-    recenzije.run(
+    neodobreneRecenzije.run(
         'INSERT INTO neodobreneRecenzije (lokacija_id, ocjena, tekst, slika) VALUES (?, ?, ?, ?)',
         [selectedLocationId, selectedRating, reviewText, reviewImage],
         (err) => {
@@ -315,6 +316,74 @@ app.get('/top_locations_and_reviews', (req, res) => {
     });
 });
 
+async function getRecenzijaById(recenzijaId) {
+    const sqlDohvatiRecenziju = "SELECT lokacija_id, ocjena, tekst, slika FROM neodobreneRecenzije WHERE id = ?";
+
+    return new Promise((resolve, reject) => {
+        neodobreneRecenzije.get(sqlDohvatiRecenziju, [recenzijaId], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row);
+            }
+        });
+    });
+}
+app.get('/neodobreneRecenzije',(req,res)=>{
+    neodobreneRecenzije.all('SELECT * FROM neodobreneRecenzije', (err,rows)=>{
+        if(err){
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        }else{
+            res.json(rows);
+        }
+    })
+});
+
+app.post('/odobri_recenziju/:id', async (req, res) => {
+    let recenzijaId=req.params.id;
+    console.log('Pokušavam dohvatiti recenziju za ID:', recenzijaId);
+    const recenzija = await getRecenzijaById(recenzijaId);
+    console.log('Uspješno dohvaćena recenzija:', recenzija);
+
+    if (!recenzija) {
+        return res.status(404).json({ error: 'Recenzija nije pronađena.' });
+    }
+
+    const { lokacija_id, ocjena, tekst, slika } = recenzija;
+    console.log('Lokacija ID:', lokacija_id);
+    console.log('Ocjena:', ocjena);
+    console.log('Tekst:', tekst);
+    console.log('Slika:', slika);
+
+
+    const sqlOdobriRecenziju = "INSERT INTO odobreneRecenzije (lokacija_id, ocjena, tekst, slika) VALUES (?, ?, ?, ?)";
+    const sqlObrisiRecenziju = "DELETE FROM neodobreneRecenzije WHERE id = ?";
+
+    try {
+        await recenzije.run(sqlOdobriRecenziju, [lokacija_id, ocjena, tekst, slika]);
+        await neodobreneRecenzije.run(sqlObrisiRecenziju, [recenzijaId]);
+        res.status(200).json({ message: 'Recenzija je odobrena.' });
+    } catch (error) {
+        console.error('Greška pri odobravanju recenzije:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.delete('/obrisi_recenziju/:recenzijaId', (req, res) => {
+    const recenzijaId = req.params.recenzijaId;
+
+    // Obriši recenziju iz neodobreneRecenzije
+    const queryDelete = 'DELETE FROM neodobreneRecenzije WHERE id = ?';
+    neodobreneRecenzije.run(queryDelete, [recenzijaId], (err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ success: false, message: 'Internal Server Error' });
+        } else {
+            res.json({ success: true, message: 'Recenzija je obrisana.' });
+        }
+    });
+});
 
 app.get("*", (req, res) => {
     return res.sendStatus(404)
