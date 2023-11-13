@@ -67,7 +67,7 @@
 	</script>
 	<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </div>
-<section class="portfolio-area section-gap" id="portfolio">
+<section class="portfolio-area section-gap" id="preferencesSelect">
 				  <div class="container">
 						<div class="row d-flex justify-content-center">
 							<div class="menu-content col-lg-10">
@@ -149,7 +149,7 @@
 				          <div class="item" onclick="toggleSelection(this)">
 				            <img src="img/stari_grad.jpg" alt="Work 1">
 				            <div class="p-inner">
-				              <h5>Stari Grad</h5>
+				              <h4>Stari Grad</h4>
 				              <div class="cat">Historija</div>
 				            </div>
 				          </div>
@@ -158,7 +158,7 @@
 				          <div class="item" onclick="toggleSelection(this)">
 				            <img src="img/plava_voda.jpg" alt="Work 1">
 				            <div class="p-inner">
-				              <h5>Plava Voda</h5>
+				              <h4>Plava Voda</h4>
 				              <div class="cat">Priroda</div>
 				            </div>
 				          </div>
@@ -185,7 +185,7 @@
 				          <div class="item" onclick="toggleSelection(this)">
 				            <img src="img/Muzej_Travnik.jpg" alt="Work 1">
 				            <div class="p-inner">
-				              <h5>Muzej</h5>
+				              <h4>Muzej</h4>
 				              <div class="cat">Historija</div>
 				            </div>
 				          </div>
@@ -194,7 +194,7 @@
 				          <div class="item" onclick="toggleSelection(this)">
 				            <img src="img/park.jpg" alt="Work 1">
 				            <div class="p-inner">
-				              <h5>Parkovi</h5>
+				              <h4>Parkovi</h4>
 				              <div class="cat">Priroda</div>
 				            </div>
 				          </div>
@@ -203,7 +203,7 @@
 							  <div class="item" onclick="toggleSelection(this)">
 								  <img src="img/sarena_dzamija.jpg" alt="Work 1">
 								  <div class="p-inner">
-									  <h5>Džamije</h5>
+									  <h4>Džamije</h4>
 									  <div class="cat">Religija</div>
 								  </div>
 							  </div>
@@ -213,7 +213,7 @@
 							  <div class="item" onclick="toggleSelection(this)">
 								  <img src="img/crkva.jpg" alt="Work 1">
 								  <div class="p-inner">
-									  <h5>Crkve</h5>
+									  <h4>Crkve</h4>
 									  <div class="cat">Religija</div>
 								  </div>
 							  </div>
@@ -223,7 +223,7 @@
 							  <div class="item" onclick="toggleSelection(this)">
 								  <img src="img/disco.jpg" alt="Work 1">
 								  <div class="p-inner">
-									  <h5>Zabava</h5>
+									  <h4>Zabava</h4>
 									  <div class="cat">Pice</div>
 								  </div>
 							  </div>
@@ -231,19 +231,36 @@
 
 				  </div>
 					</div>
+				  </div>
 
 						<div class="centered-button">
 							<button class="button-59" role="button" onclick="submitSelections()">Traži</button>
 						</div>
 					<script>
-						function toggleSelection(item){
+						function toggleSelection(item) {
 							item.classList.toggle("selected");
 						}
-						function submitSelections(){
-							let selectedItems = document.querySelectorAll('.item.selected');
-							if(selectedItems.length>0){
-								console.log("Selected items: ",selectedItems);
-							}else{
+
+						function submitSelections() {
+							// Dohvat odabranih elemenata s klasom "selected"
+							let selectedItems = document.querySelectorAll('.selected');
+							let selectedPreferences = [];
+
+							// Iteracija kroz odabrane elemente i dohvat vrijednosti
+							selectedItems.forEach(item => {
+								let h4Element = item.querySelector('h4');
+								if (h4Element) {
+									let preference = h4Element.textContent; // Ako postoji h4 element, dohvati tekst
+									selectedPreferences.push(preference);
+								}
+							});
+
+							if (selectedPreferences.length > 0) {
+								// Kreiranje URL-a sa parametrima
+								let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
+								// Preusmjeravanje na novu stranicu
+								window.location.href = `/search-results?${queryParams}`;
+							} else {
 								alert("Please select at least one item before submitting");
 							}
 						}

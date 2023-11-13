@@ -443,6 +443,15 @@ app.post('/azuriraj_ocjene', async (req, res) => {
     }
 });
 
+
+
+app.get('/search-results',(req,res)=>{
+    let preferencije=req.query.preference;
+    //proracun
+
+    res.redirect('/preporuka.html');
+})
+
 app.get("*", (req, res) => {
     return res.sendStatus(404)
 })
