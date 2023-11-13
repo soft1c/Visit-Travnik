@@ -172,11 +172,12 @@ app.post('/delete_event', (req, res) => {
 });
 
 app.post('/add_place', (req, res) => {
-    const { placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacijalan, lokacijalat, znacaj } = req.body;
-
+    const { placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacija, znacaj } = req.body;
+    let ocjena_pocetna=0;
+    console.log(lokacija);
     lokacije.run(
-        'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fast_food, kafa, pice, provod, lokacija_lang, lokacija_lat, turisticki_znacaj) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacijalan, lokacijalat, znacaj],
+        'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fast_food, kafa, pice, provod, lokacija, turisticki_znacaj, ocjena) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)',
+        [placeName, placeType, placeVrijemepocetak, placeVrijemekraj, do18, do30, do50, preko50, cevapi, tradicionalno, fastfood, kafa, pice, provod, lokacija, znacaj,ocjena_pocetna],
         (err) => {
             if (err) {
                 console.error(err);
@@ -383,6 +384,62 @@ app.delete('/obrisi_recenziju/:recenzijaId', (req, res) => {
             res.json({ success: true, message: 'Recenzija je obrisana.' });
         }
     });
+});
+
+async function dohvatiSveLokacije() {
+    return new Promise((resolve, reject) => {
+        lokacije.all('SELECT * FROM lokacije', (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+async function izracunajProsjecnuOcjenu(lokacijaId) {
+    return new Promise((resolve, reject) => {
+        recenzije.get('SELECT AVG(ocjena) AS prosjecna_ocjena FROM odobreneRecenzije WHERE lokacija_id = ?', [lokacijaId], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                const prosjecnaOcjena = row.prosjecna_ocjena || 0;
+                resolve(prosjecnaOcjena);
+            }
+        });
+    });
+}
+
+async function azurirajOcenuLokacije(lokacijaId, novaOcjena) {
+    return new Promise((resolve, reject) => {
+        lokacije.run('UPDATE lokacije SET ocjena = ? WHERE id = ?', [novaOcjena, lokacijaId], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+app.post('/azuriraj_ocjene', async (req, res) => {
+    try {
+        const lokacije = await dohvatiSveLokacije();
+
+        for (const lokacija of lokacije) {
+            const prosjecnaOcjena = await izracunajProsjecnuOcjenu(lokacija.id);
+            console.log(`Prosjecna ocjena za lokaciju ${lokacija.id}: ${prosjecnaOcjena}`);
+
+            // Ažuriraj ocjenu u tabeli lokacija
+            await azurirajOcenuLokacije(lokacija.id, prosjecnaOcjena);
+        }
+
+        console.log('Ocjene su uspješno ažurirane.');
+        res.json({ success: true, message: 'Ocjene su uspješno ažurirane.' });
+    } catch (error) {
+        console.error('Greška pri ažuriranju ocjena:', error);
+        res.status(500).json({ success: false, error: 'Greška pri ažuriranju ocjena.' });
+    }
 });
 
 app.get("*", (req, res) => {

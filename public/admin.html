@@ -122,6 +122,7 @@
   <input type="submit" value="Delete Event">
 </form>
 
+
 <script>
   const eventListContainer = document.getElementById('eventList');
 
@@ -197,10 +198,8 @@
   <input type="number" name="pice" required>
   <label for="Provod">Provod</label>
   <input type="number" name="provod" required>
-  <label for="Langitude">Langitude</label>
-  <input type="number" name="lokacija_lang" required>
-  <label for="Latitude">Latitude</label>
-  <input type="number" name="lokacija_lat" required>
+  <label for="Lokacija">Lokacija</label>
+  <input type="text" name="lokacija" required>
   <label for="TuristickiZnacaj">Turisticki Znacaj</label>
   <input type="number" name="turisticki_znacaj" required>
   <input type="submit" value="Add Place">
@@ -217,6 +216,8 @@
 </form>
 
 <div id="neodobreneRecenzije"></div>
+
+<button onclick="azurirajOcjeneBackend()">Ažuriraj ocjene</button>
 
 
 <!-- JavaScript for fetching and displaying location data -->
@@ -311,6 +312,18 @@
 
   // Dohvati neodobrene recenzije prilikom učitavanja stranice
   fetchNeodobreneRecenzije();
+  async function azurirajOcjeneBackend() {
+    try {
+      const response = await fetch('/azuriraj_ocjene', {method: 'POST'});
+      if (response.ok) {
+        console.log('Ocjene su uspješno ažurirane.');
+      } else {
+        console.error('Greška pri ažuriranju ocjena:', response.status);
+      }
+    } catch (error) {
+      console.error('Greška pri ažuriranju ocjena:', error);
+    }
+  }
 </script>
 
 <!-- Logout Button -->
