@@ -191,6 +191,10 @@ app.post('/add_place', (req, res) => {
 app.post('/submit_review', upload.single('reviewImage'), (req, res) => {
     const { reviewText, selectedRating, selectedLocationId } = req.body;
     const reviewImage = req.file ? `public/img/${req.file.filename}` : '';
+    console.log(reviewText);
+    console.log(selectedRating);
+    console.log(selectedLocationId);
+    console.log(reviewImage);
 
     // Insert the review data into the database
     recenzije.run(

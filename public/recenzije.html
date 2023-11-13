@@ -98,12 +98,6 @@
     </div>
 
     <div class="form-group">
-        <label for="locationSelect">Odaberi lokaciju:</label>
-        <select id="locationSelect" class="form-control">
-            <option value="">Odaberi lokaciju</option>
-        </select>
-    </div>
-    <div class="form-group">
         <label for="reviewText">Tekst recenzije:</label>
         <textarea id="reviewText" class="form-control" rows="3"></textarea>
     </div>
@@ -120,7 +114,7 @@
         <label for="reviewImage">Dodaj sliku (opcionalno):</label>
         <input type="file" id="reviewImage" accept="image/*">
     </div>
-    <button class="btn-primary" onclick="submitReview()">Pošalji recenziju</button>
+    <button class="btn-primary" id="submitReviewButton">Pošalji recenziju</button>
 </div>
 
 
@@ -129,29 +123,40 @@
 
 
 <script>
-    const locationsData = [];
 
     // Fetch locations from the server and populate the locationsData array
-    function fetchLocationsData() {
-        fetch('/places')
-            .then(response => response.json())
-            .then(locations => {
-                console.log("Fetchano nesto");
+    const locationsData = [];
+
+    async function fetchLocationsData() {
+        try {
+            const response = await fetch('/places');
+            if (response.ok) {
+                const locations = await response.json();
                 locationsData.push(...locations.lokacije);
-            })
-            .catch(error => {
-                console.error('Error fetching locations:', error);
-            });
+
+                const locationSearchInput = document.getElementById('locationSearch');
+                const datalist = document.getElementById('locationsList');
+
+                locations.lokacije.forEach(location => {
+                    const option = document.createElement('option');
+                    option.value = location.name;
+                    datalist.appendChild(option);
+                });
+
+                locationSearchInput.addEventListener('input', function () {
+                    filterLocations(locationSearchInput.value.toLowerCase());
+                });
+            } else {
+                console.error('Error fetching locations:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching locations:', error);
+        }
     }
 
-    // Function to populate the datalist with filtered locations
-    function filterLocations() {
-        const locationSearchInput = document.getElementById('locationSearch');
+    function filterLocations(searchQuery) {
         const datalist = document.getElementById('locationsList');
-
-        datalist.innerHTML = ''; // Clear the existing datalist options
-
-        const searchQuery = locationSearchInput.value.toLowerCase();
+        datalist.innerHTML = '';
 
         // Filter locations based on the search query and populate the datalist
         locationsData.forEach(location => {
@@ -163,12 +168,110 @@
         });
     }
 
-    // Call the function to populate the locationsData array and set up the event listener
-    fetchLocationsData();
+    const locationSearchInput = document.getElementById('locationSearch');
+    const locationsList = document.getElementById('locationsList');
+
+    let selectedLocationId = null;
+
+    locationSearchInput.addEventListener('change', function () {
+        const selectedLocationName = locationSearchInput.value.toLowerCase();
+
+        const selectedLocation = locationsData.find(location => location.name.toLowerCase() === selectedLocationName);
+        if (selectedLocation) {
+            selectedLocationId = selectedLocation.id;
+        } else {
+            selectedLocationId = null;
+        }
+
+        console.log('Selected Location ID:', selectedLocationId);
+    });
+    const submitReviewButton = document.getElementById('submitReviewButton');
+    submitReviewButton.addEventListener('click', submitReview);
+
+
+        async function submitReview() {
+            const reviewText = document.getElementById('reviewText').value;
+            const selectedRating = document.getElementById('selectedRating').textContent;
+            const reviewImageInput = document.getElementById('reviewImage');
+            const locationSearchInput = document.getElementById('locationSearch'); // Promijenjeno ovdje
+            const selectedLocationName = locationSearchInput.value;
+
+            // Pronađi ID odabrane lokacije
+            const selectedLocation = locationsData.find(location => location.name.toLowerCase() === selectedLocationName.toLowerCase());
+            const selectedLocationId = selectedLocation ? selectedLocation.id : null;
+
+            const formData = new FormData();
+            formData.append('reviewText', reviewText);
+            formData.append('selectedRating', selectedRating);
+            formData.append('selectedLocationId', selectedLocationId);
+
+            if (reviewImageInput.files.length > 0) {
+                const resizedImage = await resizeImage(reviewImageInput.files[0], 300);
+                formData.append('reviewImage', resizedImage);
+            }
+
+            try {
+                const response = await fetch('/submit_review', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Success:', data);
+                } else {
+                    console.error('Error submitting review:', response.status);
+                }
+            } catch (error) {
+                console.error('Error submitting review:', error);
+            }
+        }
+
+
+
+
 
     // Attach the filterLocations function to the input event
-    const locationSearchInput = document.getElementById('locationSearch');
+
     locationSearchInput.addEventListener('input', filterLocations);
+
+
+    // Praćenje odabrane lokacije
+
+
+    // Event listener za unos u polje za pretraživanje
+    locationSearchInput.addEventListener('input', function () {
+        const searchQuery = locationSearchInput.value.toLowerCase();
+
+        // Filtriraj lokacije temeljem upisa korisnika
+        const filteredLocations = locationsData.filter(location => location.name.toLowerCase().includes(searchQuery));
+
+        // Isprazni datalist
+        locationsList.innerHTML = '';
+
+        // Dodaj opcije u datalist
+        filteredLocations.forEach(location => {
+            const option = document.createElement('option');
+            option.value = location.name;
+            locationsList.appendChild(option);
+        });
+    });
+
+    // Event listener za odabir lokacije iz datalista
+    locationSearchInput.addEventListener('change', function () {
+        const selectedLocationName = locationSearchInput.value.toLowerCase();
+
+        // Pronađi ID odabrane lokacije
+        const selectedLocation = locationsData.find(location => location.name.toLowerCase() === selectedLocationName);
+        if (selectedLocation) {
+            selectedLocationId = selectedLocation.id;
+        } else {
+            selectedLocationId = null;
+        }
+
+        // Prikazuj ID odabrane lokacije (možeš ukloniti ovo u produkciji)
+        console.log('Selected Location ID:', selectedLocationId);
+    });
 
 
     const reviewsContainer = document.getElementById('reviewsContainer');
@@ -214,32 +317,7 @@
         });
     }
 
-    function submitReview() {
-        const reviewText = document.getElementById('reviewText').value;
-        const selectedRating = document.getElementById('selectedRating').textContent;
-        const reviewImage = document.getElementById('reviewImage').files[0];
 
-        const formData = new FormData();
-        formData.append('reviewText', reviewText);
-        formData.append('selectedRating', selectedRating);
-        if (reviewImage) {
-            formData.append('reviewImage', reviewImage);
-        }
-
-        fetch('/submit_review', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-
-            });
-    }
 
     function createReviewElement(review) {
         const reviewElement = document.createElement('div');
@@ -304,50 +382,7 @@
         });
 
     }
-    async function fetchTopLocationsAndReviews() {
-        console.log("Pokusaj fetchanja");
-        try {
-            const response = await fetch('/top_locations_and_reviews');
-            if (response.ok) {
-                const data = await response.json();
-                displayTopLocations(data.topLocations);
-            } else {
-                console.error('Failed to fetch top locations and reviews');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    // Function to display top locations and their average ratings
-    function displayTopLocations(topLocations) {
-        const topLocationsContainer = document.getElementById('topLocations');
-
-        for (const type in topLocations) {
-            const typeHeader = document.createElement('h2');
-            typeHeader.textContent = type;
-            topLocationsContainer.appendChild(typeHeader);
-
-            topLocations[type].forEach(location => {
-                const locationDiv = document.createElement('div');
-                locationDiv.classList.add('location');
-
-                const nameHeader = document.createElement('h3');
-                nameHeader.textContent = location.name;
-
-                const avgRatingParagraph = document.createElement('p');
-                avgRatingParagraph.textContent = `Average Rating: ${location.avg_rating.toFixed(2)}`;
-
-                locationDiv.appendChild(nameHeader);
-                locationDiv.appendChild(avgRatingParagraph);
-
-                topLocationsContainer.appendChild(locationDiv);
-            });
-        }
-    }
-
-    // Fetch top locations and reviews when the page loads
-    fetchTopLocationsAndReviews();
+    fetchLocationsData();
 
 </script>
 
