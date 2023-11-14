@@ -3,7 +3,7 @@ const multer=require('multer')
 const path = require('path')
 const session = require('express-session')
 const bodyParser = require('body-parser')
-const sqlite3=require('sqlite3');
+const sqlite3=require('sqlite3')
 
 
 let baza=new sqlite3.Database('dogadjaji.db');
@@ -21,20 +21,20 @@ app.use('/css/public/fonts', express.static(path.join(__dirname, 'public', 'font
 
 const sampleData = [
     { name: 'Ćevapi', type: 'restaurant' },
-    { name: 'Kafići', type: 'Piće' },
+    { name: 'Kafići', type: 'drinks' },
     { name: 'Fast Food', type: 'restaurant' },
-    { name: 'Kafa', type: 'Piće' },
-    { name: 'Stari Grad', type: 'Historija' },
-    { name: 'Plava Voda', type: 'Priroda' },
+    { name: 'Kafa', type: 'drinks' },
+    { name: 'Stari Grad', type: 'history' },
+    { name: 'Plava Voda', type: 'park' },
     { name: 'Tradicionalna hrana', type: 'restaurant' },
     { name: 'Restorani', type: 'restaurant' },
-    { name: 'Muzej', type: 'Historija' },
-    { name: 'Parkovi', type: 'Priroda' },
-    { name: 'Džamije', type: 'Religija' },
-    { name: 'Crkve', type: 'Religija' },
-    { name: 'Zabava', type: 'Pice' },
-    {name: 'Ćiro', type: 'Historija'},
-    {name: 'Vlašić', type: 'Priroda'}
+    { name: 'Muzej', type: 'history' },
+    { name: 'Parkovi', type: 'park' },
+    { name: 'Džamije', type: 'religion' },
+    { name: 'Crkve', type: 'religion' },
+    { name: 'Zabava', type: 'drinks' },
+    {name: 'Ćiro', type: 'history'},
+    {name: 'Vlašić', type: 'park'}
 ];
 const storage=multer.diskStorage({
     destination:function(req,file,cb){
@@ -61,7 +61,7 @@ app.get('/recenzije',(req,res)=>{
 });
 
 app.get('/events',(req,res)=>{
-    baza.all('SELECT * FROM dogadjaji',(err,rows)=>{
+    baza.all('SELECT * FROM events',(err,rows)=>{
     if(err){
             console.error(err);
             res.status(500).send('Internal Server Error');
@@ -89,9 +89,21 @@ app.post('/public/img',upload.single('fileToUpload'),(req,res)=>{
 })
 
 app.get("/", (req, res) => {
-
     return res.sendFile("./PC.html")
 })
+
+function dajLokacije(tip, callback){
+    lokacije.all('SELECT * FROM lokacije WHERE tip = ?',
+        [tip],(err,rows)=>{
+        if(err){
+            return callback(err,null);
+        }else{
+            callback(null,rows);
+        }
+        })
+}
+
+
 
 /*app.post('/admin',(req,res)=>{
     const {username,password}=req.body;
@@ -124,7 +136,7 @@ app.get('/admin', (req, res) => {
         res.redirect('/admin_login.html');
     }
     if (true) {
-        baza.all('SELECT * FROM dogadjaji', (err, events) => {
+        baza.all('SELECT * FROM events', (err, events) => {
             if (err) {
                 console.error(err);
                 res.status(500).send('Internal Server Error');
@@ -150,7 +162,7 @@ app.post('/add_event', upload.single('event_image'), (req, res) => {
         const imageurl = req.file ? `public/img/${req.file.filename}` : '';
 
         if (event_name && event_date && imageurl && event_description) {
-            const query = 'INSERT INTO dogadjaji (name, opis, datum, picture) VALUES (?,?, ?, ?)';
+            const query = 'INSERT INTO events (name, opis, datum, picture) VALUES (?,?, ?, ?)';
             const values = [event_name, event_description, event_date, imageurl];
 
             baza.run(query, values, (err) => {
@@ -175,7 +187,7 @@ app.post('/delete_event', (req, res) => {
         const event_id = req.body.event_id;
 
         if (event_id) {
-            const query = 'DELETE FROM dogadjaji WHERE id = ?';
+            const query = 'DELETE FROM events WHERE id = ?';
             baza.run(query, [event_id], (err) => {
                 if (err) {
                     console.error(err);
@@ -467,37 +479,32 @@ app.post('/azuriraj_ocjene', async (req, res) => {
 
 
 app.get('/search-results', (req, res) => {
-    let preferences = req.query.preference;
+    let preferencije = req.query.preference;
 
-    // Ako je preferences string, pretvori ga u niz
-    if (!Array.isArray(preferences)) {
-        preferences = [preferences];
+    // Ako je preferencije string, pretvori ga u niz
+    if (typeof preferencije === 'string') {
+        preferencije = [preferencije];
     }
+    console.log(preferencije);
+    preferencije.forEach(preferencija => {
+        // Pronalaženje odgovarajućeg objekta u mapi sampleData
+        const foundItem = sampleData.find(item => item.name === preferencija);
 
-    console.log('Odabrane preferencije:', preferences);
-
-    // Pripremite upit za dohvat lokacija prema odabranim preferencijama
-    const query = `SELECT * FROM lokacije WHERE tip IN (${preferences.map(pref => `'${pref}'`).join(',')})`;
-
-    // Izvršite upit prema bazi podataka
-    lokacije.all(query, (err, matchingLocations) => {
-        if (err) {
-            console.error('Greška prilikom dohvaćanja lokacija iz baze podataka:', err);
-            res.status(500).send('Internal Server Error');
-            return;
+        // Provjera da li je pronađen odgovarajući objekat
+        if (foundItem) {
+            // Ispisivanje imena preferencije i njenog tipa
+            console.log(`Type for ${preferencija}: ${foundItem.type}`);
+            dajLokacije(foundItem.type,(err,lokacije)=>{
+                if(err){
+                    console.log('Nije dobro nesto');
+                }else{
+                    console.log("Lokacije: ",lokacije);
+                }
+            })
         }
-
-        console.log('Lokacije koje odgovaraju preferencijama:', matchingLocations);
-
-        if (matchingLocations.length === 0) {
-            console.log('Nema pronađenih lokacija za odabrane preferencije.');
-            // Dodajte dodatne ispisne poruke ili obradu prema potrebi
-        }
-
-        // Ovdje možete dodatno obraditi pronađene lokacije prije slanja odgovora
-
-        res.redirect('/preporuka.html');
     });
+    // Slanje odgovora
+    res.send('Pogledaj konzolu za rezultate.');
 });
 
 

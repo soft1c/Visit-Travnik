@@ -232,6 +232,7 @@
 				  </div>
 					</div>
 				  </div>
+</section>
 
 
 	<form action="/submit_age" method="post">
@@ -244,6 +245,7 @@
 			<option value="35-50">35-50</option>
 			<option value="50plus">50+</option>
 		</select>
+	</form>
 		<form action="/submit_numbers" method="post">
 
 			<!-- First Number Input -->
@@ -295,95 +297,20 @@
 							} else {
 								alert("Please select at least one item before submitting");
 							}
-						}async function fetchNeodobreneRecenzije() {
-							try {
-								const response = await fetch('/neodobreneRecenzije');
-								if (response.ok) {
-									const neodobreneRecenzije = await response.json();
-									displayNeodobreneRecenzije(neodobreneRecenzije);
-								} else {
-									console.error('Error fetching neodobrene recenzije:', response.status);
-								}
-							} catch (error) {
-								console.error('Error fetching neodobrene recenzije:', error);
-							}
-						}
-
-						function displayNeodobreneRecenzije(recenzije) {
-							const neodobreneRecenzijeContainer = document.getElementById('neodobreneRecenzije');
-							neodobreneRecenzijeContainer.innerHTML = '';
-
-							recenzije.forEach(recenzija => {
-								const recenzijaElement = document.createElement('div');
-								recenzijaElement.innerHTML = `
-          <p>ID: ${recenzija.id}</p>
-          <p>Recenzija: ${recenzija.tekst}</p>
-          <button class="btn-approve" data-id="${recenzija.id}" onclick="odobriRecenziju(${recenzija.id})">Odobri</button>
-          <button class="btn-delete" data-id="${recenzija.id}" onclick="obrisiRecenziju(${recenzija.id})">Obriši</button>
-          <hr>
-        `;
-								neodobreneRecenzijeContainer.appendChild(recenzijaElement);
-							});
-						}
-
-
-						async function obrisiRecenziju(recenzijaId) {
-							try {
-								const response = await fetch(`/obrisi_recenziju/${recenzijaId}`, { method: 'DELETE' });
-								if (response.ok) {
-									console.log('Recenzija je obrisana.');
-									// Osvježi prikaz recenzija ili ukloni HTML element za ovu recenziju
-									fetchNeodobreneRecenzije();
-								} else {
-									console.error('Greška pri brisanju recenzije:', response.status);
-								}
-							} catch (error) {
-								console.error('Greška pri brisanju recenzije:', error);
-							}
-						}
-
-						async function odobriRecenziju(recenzijaId) {
-							try {
-								const response = await fetch(`/odobri_recenziju/${recenzijaId}`, { method: 'POST' });
-								if (response.ok) {
-									console.log('Recenzija je odobrena.');
-									// Osvježi prikaz recenzija ili ukloni HTML element za ovu recenziju
-									fetchNeodobreneRecenzije();
-								} else {
-									console.error('Greška pri odobravanju recenzije:', response.status);
-								}
-							} catch (error) {
-								console.error('Greška pri odobravanju recenzije:', error);
-							}
-						}
-
-						// Dohvati neodobrene recenzije prilikom učitavanja stranice
-						fetchNeodobreneRecenzije();
-						async function azurirajOcjeneBackend() {
-							try {
-								const response = await fetch('/azuriraj_ocjene', {method: 'POST'});
-								if (response.ok) {
-									console.log('Ocjene su uspješno ažurirane.');
-								} else {
-									console.error('Greška pri ažuriranju ocjena:', response.status);
-								}
-							} catch (error) {
-								console.error('Greška pri ažuriranju ocjena:', error);
-							}
 						}
 					</script>
 
-				</section>
+
 
 				<h3>Dolazeći događaji</h3>
 
 
 
-				<section class="wrapper">
+
 					<div class="container" id="events-container">
 
 					</div>
-				</section>
+
 				<script>
 					function fetchAndDisplayEvents() {
 						fetch('/events')
@@ -391,7 +318,7 @@
 								.then(events => {
 									const eventsContainer = document.getElementById('events-container');
 									let currentRow;
-
+									console.log("Desava se nesto");
 									// ...
 									events.forEach((event, index) => {
 										if (index % 3 === 0) {
