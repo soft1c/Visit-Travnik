@@ -982,6 +982,11 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 10px;
 }
 
+img{
+  max-width: 100%;
+  height: auto;
+}
+
 .single-portfolio:hover .item {
   border: 4px solid rgb(128, 128, 128);
   border-radius: 13px;/* Gray border on hover */
