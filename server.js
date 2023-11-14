@@ -36,6 +36,15 @@ const sampleData = [
     {name: 'Ćiro', type: 'history'},
     {name: 'Vlašić', type: 'park'}
 ];
+
+const tabela=[
+    {name:'Ćevapi', type : 'hrana_cevapi'},
+    {name:'FastFood', type:'hrana_fastfood'},
+    {name:'Tradicionalno',type:'hrana_tradiocionalno'},
+    {name:'Restoran',type:'hrana_restoran'}
+
+];
+
 const storage=multer.diskStorage({
     destination:function(req,file,cb){
         cb(null,'./public/img');
@@ -101,6 +110,46 @@ function dajLokacije(tip, callback){
             callback(null,rows);
         }
         })
+}
+
+
+function dajNajboljiRestoran(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tip){
+    let najbolji=[];
+    const korelacija=tabela.find(item=>item.name ===tip);
+    const atribut=korelacija.type;
+    lokacije.forEach(lokacija=>{
+        let rezultat=0;
+        rezultat+=lokacija['turisticki_znacaj'];
+        if(vrijeme_dolaska>lokacija['kraj_radnog_vremena'] ||vrijeme_odlaska<lokacija['pocetak_radnog_vremena']){
+            rezultat=0;
+        }
+        rezultat+=lokacija['ocjena'];
+        najbolji.push({lokacija,rezultat});
+    });
+    najbolji.sort((a,b)=>b.rezultat-a.rezultat);
+    najbolji=najbolji.slice(0,3);
+    console.log(najbolji);
+}
+function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odlaska,tip){
+    let najbolji=[];
+    lokacije.forEach(lokacija=>{
+        let rezultat=0;
+        rezultat+=lokacija[tip];
+        console.log(lokacija[tip]);
+        if(vrijeme_dolaska>lokacija['kraj_radnog_vremena'] ||vrijeme_odlaska<lokacija['pocetak_radnog_vremena']){
+            rezultat=0;
+        }
+        rezultat+=lokacija['ocjena'];
+
+        najbolji.push({lokacija,rezultat});
+    });
+    najbolji.sort((a,b)=>b.rezultat-a.rezultat);
+    najbolji=najbolji.slice(0,3);
+    console.log(najbolji);
+}
+
+function dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tip){
+
 }
 
 
@@ -306,50 +355,7 @@ app.get('/places', (req,res)=>{
     });
 });
 
-app.get('/top_locations_and_reviews', (req, res) => {
-    const locationTypes = ['hrana', 'piće', 'historija', 'priroda', 'religija'];
-    const topLocations = {};
 
-    locationTypes.forEach(type => {
-        lokacije.all(
-            'SELECT * FROM lokacije WHERE tip = ?',
-            [type],
-            (err, locationRows) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    // Izračunaj prosječnu ocjenu za svaku lokaciju iz tabele recenzija
-                    const locations = locationRows;
-                    const locationIds = locations.map(location => location.id);
-
-                    recenzije.all(
-                        'SELECT lokacija_id, AVG(ocjena) AS avg_rating FROM neodobreneRecenzije WHERE lokacija_id =',
-                        (err, ratingRows) => {
-                            if (err) {
-                                console.error(err);
-                            } else {
-                                // Stvori mapping lokacija prema prosječnim ocjenama
-                                const locationRatings = {};
-                                ratingRows.forEach(row => {
-                                    locationRatings[row.lokacija_id] = row.avg_rating;
-                                });
-
-                                // Sortiraj lokacije po prosječnoj ocjeni i odaberi top 3
-                                locations.sort((a, b) => {
-                                    return (locationRatings[b.id] || 0) - (locationRatings[a.id] || 0);
-                                });
-                                topLocations[type] = locations.slice(0, 3);
-                                if (Object.keys(topLocations).length === locationTypes.length) {
-                                    res.json({ topLocations });
-                                }
-                            }
-                        }
-                    );
-                }
-            }
-        );
-    });
-});
 
 async function getRecenzijaById(recenzijaId) {
     const sqlDohvatiRecenziju = "SELECT lokacija_id, ocjena, tekst, slika FROM neodobreneRecenzije WHERE id = ?";
@@ -480,8 +486,10 @@ app.post('/azuriraj_ocjene', async (req, res) => {
 
 app.get('/search-results', (req, res) => {
     let preferencije = req.query.preference;
-    let dob=req.query.number2;
-    console.log(dob);
+    let vrijeme_odlaska=req.query.number2;
+    let vrijeme_dolaska=req.query.number1;
+    let dob=req.query.age;
+    console.log(dob,vrijeme_dolaska,vrijeme_odlaska);
     // Ako je preferencije string, pretvori ga u niz
     if (typeof preferencije === 'string') {
         preferencije = [preferencije];
@@ -499,9 +507,11 @@ app.get('/search-results', (req, res) => {
                 if(err){
                     console.log('Nije dobro nesto');
                 }else{
-                    console.log("Lokacije: ",lokacije);
+                    console.log(foundItem);
+                    dajNajboljuZnamenitost(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,'Historija');
                 }
             })
+
         }
     });
     // Slanje odgovora
