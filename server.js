@@ -39,10 +39,22 @@ const sampleData = [
 
 const tabela=[
     {name:'Ćevapi', type : 'hrana_cevapi'},
-    {name:'FastFood', type:'hrana_fastfood'},
+    {name:'FastFood', type:'hrana_fast_food'},
     {name:'Tradicionalno',type:'hrana_tradiocionalno'},
     {name:'Restoran',type:'hrana_restoran'}
 
+];
+
+const pica=[
+    {name:'Kafići',type:'pice'},
+    {name:'Kafa',type:'kafa'},
+    {name:'Zabava', type:'provod'}
+];
+
+const znamenitosti=[
+    {name:'Priroda',type:'priroda'},
+    {name:'Historijske Znamenitosti',type:'historija'},
+    {name:'Vjerske Znamenitosti',type:'vjera'}
 ];
 
 const storage=multer.diskStorage({
@@ -113,43 +125,141 @@ function dajLokacije(tip, callback){
 }
 
 
-function dajNajboljiRestoran(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tip){
-    let najbolji=[];
-    const korelacija=tabela.find(item=>item.name ===tip);
-    const atribut=korelacija.type;
-    lokacije.forEach(lokacija=>{
-        let rezultat=0;
-        rezultat+=lokacija['turisticki_znacaj'];
-        if(vrijeme_dolaska>lokacija['kraj_radnog_vremena'] ||vrijeme_odlaska<lokacija['pocetak_radnog_vremena']){
-            rezultat=0;
+function dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, tipovi) {
+    let najbolji = [];
+    if (!Array.isArray(tipovi)) {
+        tipovi = [tipovi];
+    }
+
+    lokacije.forEach(lokacija => {
+        let rezultat = 0;
+        console.log(tipovi);
+        tipovi.forEach(tip => {
+            const korelacija = tabela.find(item => item.name === tip);
+            if (korelacija) {
+                const atribut = korelacija.type;
+
+                // Dodaj ocjenu na osnovu tipa
+                rezultat += lokacija[atribut];
+            } else {
+                console.log(`Nije pronađena korelacija za tip: ${tip}`);
+            }
+        });
+
+
+        if (vrijeme_dolaska > lokacija.kraj_radnog_vremena || vrijeme_odlaska < lokacija.pocetak_radnog_vremena) {
+            rezultat = 0;
         }
-        rezultat+=lokacija['ocjena'];
-        najbolji.push({lokacija,rezultat});
+
+
+        rezultat += lokacija.ocjena;
+
+
+        najbolji.push({ lokacija, rezultat });
     });
-    najbolji.sort((a,b)=>b.rezultat-a.rezultat);
-    najbolji=najbolji.slice(0,3);
+
+
+    najbolji.sort((a, b) => b.rezultat - a.rezultat);
+
+
+    najbolji = najbolji.slice(0, 3);
+
+    najbolji.forEach(item => {
+        console.log(`Lokacija: ${item.lokacija.name}, Rezultat: ${item.rezultat}`);
+    });
+}
+function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odlaska,tipovi){
+    if (!Array.isArray(tipovi)) {
+        tipovi = [tipovi];
+    }
+    if (!Array.isArray(lokacije)) {
+        lokacije = [lokacije];
+    }
+    let najbolji = [];
+    lokacije.forEach(lokacija => {
+        let rezultat = 0;
+
+        tipovi.forEach(tip => {
+            const korelacija = znamenitosti.find(item => item.name === tip);
+            if (korelacija) {
+                const atribut = korelacija.type;
+
+                // Dodaj ocjenu na osnovu tipa
+                rezultat += lokacija[atribut];
+            } else {
+                console.log(`Nije pronađena korelacija za tip: ${tip}`);
+            }
+        });
+
+        // Provjeri radno vrijeme
+        if (vrijeme_dolaska > lokacija.kraj_radnog_vremena || vrijeme_odlaska < lokacija.pocetak_radnog_vremena) {
+            rezultat = 0;
+        }
+
+        // Dodaj ocjenu
+        rezultat += lokacija.ocjena;
+
+        // Dodaj dodatne kriterije ili ocjene prema potrebi
+        // ...
+
+        // Dodaj lokaciju i rezultat u niz
+        najbolji.push({ lokacija, rezultat });
+    });
+
+    // Sortiraj niz po rezultatima u opadajućem redoslijedu
+    najbolji.sort((a, b) => b.rezultat - a.rezultat);
+
+    // Sačuvaj samo prvih tri lokacije
+    najbolji = najbolji.slice(0, 3);
+
     console.log(najbolji);
 }
-function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odlaska,tip){
-    let najbolji=[];
-    lokacije.forEach(lokacija=>{
-        let rezultat=0;
-        rezultat+=lokacija[tip];
-        console.log(lokacija[tip]);
-        if(vrijeme_dolaska>lokacija['kraj_radnog_vremena'] ||vrijeme_odlaska<lokacija['pocetak_radnog_vremena']){
-            rezultat=0;
+
+function dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tipovi){
+    let najbolji = [];
+    if (!Array.isArray(tipovi)) {
+        tipovi = [tipovi];
+    }
+    if (!Array.isArray(lokacije)) {
+        lokacije = [lokacije];
+    }
+
+    lokacije.forEach(lokacija => {
+        let rezultat = 0;
+        console.log(tipovi);
+        tipovi.forEach(tip => {
+            const korelacija = pica.find(item => item.name === tip);
+            if (korelacija) {
+                const atribut = korelacija.type;
+
+                // Dodaj ocjenu na osnovu tipa
+                rezultat += lokacija[atribut];
+            } else {
+                console.log(`Nije pronađena korelacija za tip: ${tip}`);
+            }
+        });
+
+
+        if (vrijeme_dolaska > lokacija.kraj_radnog_vremena || vrijeme_odlaska < lokacija.pocetak_radnog_vremena) {
+            rezultat = 0;
         }
-        rezultat+=lokacija['ocjena'];
 
-        najbolji.push({lokacija,rezultat});
+
+        rezultat += lokacija.ocjena;
+
+
+        najbolji.push({ lokacija, rezultat });
     });
-    najbolji.sort((a,b)=>b.rezultat-a.rezultat);
-    najbolji=najbolji.slice(0,3);
-    console.log(najbolji);
-}
 
-function dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tip){
 
+    najbolji.sort((a, b) => b.rezultat - a.rezultat);
+
+
+    najbolji = najbolji.slice(0, 3);
+
+    najbolji.forEach(item => {
+        console.log(`Lokacija: ${item.lokacija.name}, Rezultat: ${item.rezultat}`);
+    });
 }
 
 
@@ -496,6 +606,7 @@ app.get('/search-results', (req, res) => {
     }
     console.log(preferencije);
     preferencije.forEach(preferencija => {
+        console.log(preferencija);
         // Pronalaženje odgovarajućeg objekta u mapi sampleData
         const foundItem = sampleData.find(item => item.name === preferencija);
 
@@ -507,8 +618,8 @@ app.get('/search-results', (req, res) => {
                 if(err){
                     console.log('Nije dobro nesto');
                 }else{
-                    console.log(foundItem);
-                    dajNajboljuZnamenitost(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,'Historija');
+                    //console.log(foundItem);
+                    dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,preferencije);
                 }
             })
 
