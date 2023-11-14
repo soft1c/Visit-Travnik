@@ -3,48 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!-- CSS============================================= -->
+    <link rel="stylesheet" href="/css/linearicons.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/magnific-popup.css">
+    <link rel="stylesheet" href="/css/nice-select.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-oSNjcXCCNEI7uZgo2FzFv5ViZ5zCFs2UZ5QytwQLvud+pbj4bcP/r5S9VJBv4e9CA" crossorigin="anonymous">
     <title>Reviews</title>
     <style>
-        .star-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px; /* Povećaj razmak između zvijezda i teksta */
-        }
-
-        .star-container {
-            font-size: 24px;
-            color: #ddd;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-
-        .star-container.gold {
-            color: #ffd700; /* Zlatna boja */
-        }
-
-        .review-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .review {
-            border-bottom: 1px solid #eee;
-            padding: 20px 0;
-        }
-
-        .review p {
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        .review-author {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .review-date {
-            color: #888;
-            font-size: 0.8em;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Dodana pozadinska boja */
         }
 
         .review-form {
@@ -56,23 +30,34 @@
             border-radius: 8px;
         }
 
-        .review-form h3 {
+        h3 {
+            color: #007bff; /* Plava boja za naslov */
             margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        label {
+            font-weight: bold;
+            color: #333;
         }
 
-        .btn-primary {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        #reviewText {
+            resize: vertical; /* Omogućava vertikalno proširenje textarea */
         }
 
         .star-group {
             display: flex;
             align-items: center;
+            margin-bottom: 20px;
         }
 
         .star-container {
@@ -83,7 +68,20 @@
         }
 
         .star-container.gold {
-            color: #ffd700; /* Zlatna boja */
+            color: #ffd700;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Promijenjena boja na hover */
         }
     </style>
 </head>
@@ -99,11 +97,10 @@
 
     <div class="form-group">
         <label for="reviewText">Tekst recenzije:</label>
-        <textarea id="reviewText" class="form-control" rows="3"></textarea>
+        <textarea id="reviewText" class="form-control" rows="5"></textarea>
     </div>
     <div class="form-group star-group" id="star-group">
         <label>Ocjena: <span id="selectedRating">0</span></label>
-        <!-- Zamijenjeni odabir ocjene sa zvjezdicama -->
         <div class="star-container" data-rating="1">&#9733;</div>
         <div class="star-container" data-rating="2">&#9733;</div>
         <div class="star-container" data-rating="3">&#9733;</div>
@@ -116,6 +113,8 @@
     </div>
     <button class="btn-primary" id="submitReviewButton">Pošalji recenziju</button>
 </div>
+
+
 
 
 
@@ -384,7 +383,48 @@
     fetchLocationsData();
 
 </script>
+<style>footer {
+    margin-top: 150px; /* Prilagodite željenu visinu margine */
+}
+</style>
 
+<footer class="footer-area section-gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <!-- About Us Widget -->
+                <div class="single-footer-widget">
+                    <h6>About Us</h6>
+                    <p>
+                        We provide tour plans for your most comfortable travel ever in Travnik. Let yourself dive into the beauty, culture, and festivals of this charming Bosnian city. Have a great time in Travnik!
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <!-- Follow Us Widget -->
+                <div class="single-footer-widget">
+                    <h6>Follow Us</h6>
+                    <p>Let us be social</p>
+                    <div class="footer-social d-flex align-items-center">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12">
+                <!-- Contact Us Widget -->
+                <div class="single-footer-widget">
+                    <h6>Contact Us</h6>
+                    <p>Get in touch with us</p>
+                    <div class="footer-contact-info">
+                        <div><i class="fa fa-phone"></i> <a href="tel:+123456789">+123456789</a></div>
+                        <div><i class="fa fa-envelope"></i> <a href="mailto:info@example.com">info@example.com</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>

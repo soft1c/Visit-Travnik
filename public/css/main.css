@@ -1452,3 +1452,47 @@ button:hover span {
     transform: scale(1);
   }
 }
+/* Dodani novi stilovi za Contact Us Widget */
+.contact-widget {
+  text-align: right;
+}
+
+.footer-contact-info {
+  color: #fff;
+}
+
+.footer-contact-info div {
+  margin-bottom: 10px;
+}
+
+.footer-contact-info i {
+  margin-right: 5px;
+}
+
+/* Dodane ikone za Instagram, Facebook, telefon i e-poštu */
+.footer-social a:nth-child(4) {
+  margin-right: 0; /* Ukloni desni razmak za posljednju ikonu (Instagram) */
+}
+
+.footer-social i.fa-facebook {
+  color: #3b5998; /* Boja Facebook ikone */
+}
+
+.footer-social i.fa-instagram {
+  color: #e4405f; /* Boja Instagram ikone */
+}
+
+.footer-contact-info i.fa-phone,
+.footer-contact-info i.fa-envelope {
+  color: #8ab92d; /* Boja ikona za telefon i e-poštu */
+}
+
+/* Stil za linkove u Contact Us Widget-u */
+.footer-contact-info a {
+  color: #8ab92d;
+  text-decoration: none;
+}
+
+.footer-contact-info a:hover {
+  text-decoration: underline;
+}
