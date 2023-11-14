@@ -18,6 +18,24 @@ app.use(session({secret:'your_secret_key',resave: false, saveUninitialized:true}
 app.use(bodyParser.urlencoded({extended:true}));
 app.use('/css/public/fonts', express.static(path.join(__dirname, 'public', 'fonts')));
 
+
+const sampleData = [
+    { name: 'Ćevapi', type: 'restaurant' },
+    { name: 'Kafići', type: 'Piće' },
+    { name: 'Fast Food', type: 'restaurant' },
+    { name: 'Kafa', type: 'Piće' },
+    { name: 'Stari Grad', type: 'Historija' },
+    { name: 'Plava Voda', type: 'Priroda' },
+    { name: 'Tradicionalna hrana', type: 'restaurant' },
+    { name: 'Restorani', type: 'restaurant' },
+    { name: 'Muzej', type: 'Historija' },
+    { name: 'Parkovi', type: 'Priroda' },
+    { name: 'Džamije', type: 'Religija' },
+    { name: 'Crkve', type: 'Religija' },
+    { name: 'Zabava', type: 'Pice' },
+    {name: 'Ćiro', type: 'Historija'},
+    {name: 'Vlašić', type: 'Priroda'}
+];
 const storage=multer.diskStorage({
     destination:function(req,file,cb){
         cb(null,'./public/img');
@@ -447,13 +465,41 @@ app.post('/azuriraj_ocjene', async (req, res) => {
 
 
 
-app.get('/search-results',(req,res)=>{
-    let preferencije=req.query.preference;
-    console.log(preferencije);
-    for_each()
+app.get('/search-results', (req, res) => {
+    let preferences = req.query.preference;
 
-    res.redirect('/preporuka.html');
-})
+    // Ako je preferences string, pretvori ga u niz
+    if (!Array.isArray(preferences)) {
+        preferences = [preferences];
+    }
+
+    console.log('Odabrane preferencije:', preferences);
+
+    // Pripremite upit za dohvat lokacija prema odabranim preferencijama
+    const query = `SELECT * FROM lokacije WHERE tip IN (${preferences.map(pref => `'${pref}'`).join(',')})`;
+
+    // Izvršite upit prema bazi podataka
+    lokacije.all(query, (err, matchingLocations) => {
+        if (err) {
+            console.error('Greška prilikom dohvaćanja lokacija iz baze podataka:', err);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        console.log('Lokacije koje odgovaraju preferencijama:', matchingLocations);
+
+        if (matchingLocations.length === 0) {
+            console.log('Nema pronađenih lokacija za odabrane preferencije.');
+            // Dodajte dodatne ispisne poruke ili obradu prema potrebi
+        }
+
+        // Ovdje možete dodatno obraditi pronađene lokacije prije slanja odgovora
+
+        res.redirect('/preporuka.html');
+    });
+});
+
+
 
 app.get("*", (req, res) => {
     return res.sendStatus(404)
