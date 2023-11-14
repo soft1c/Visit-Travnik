@@ -89,6 +89,7 @@ app.post('/public/img',upload.single('fileToUpload'),(req,res)=>{
 })
 
 app.get("/", (req, res) => {
+
     return res.sendFile("./PC.html")
 })
 

@@ -233,9 +233,41 @@
 					</div>
 				  </div>
 
-						<div class="centered-button">
-							<button class="button-59" role="button" onclick="submitSelections()">Traži</button>
-						</div>
+
+	<form action="/submit_age" method="post">
+
+		<!-- Age Range Dropdown -->
+		<label for="age">Godine</label>
+		<select id="age" name="age" required>
+			<option value="under18">Under 18</option>
+			<option value="18-35">18-35</option>
+			<option value="35-50">35-50</option>
+			<option value="50plus">50+</option>
+		</select>
+		<form action="/submit_numbers" method="post">
+
+			<!-- First Number Input -->
+			<label for="number1">Number 1:</label>
+			<input type="number" id="number1" name="number1" required>
+
+			<br>
+
+			<!-- Second Number Input -->
+			<label for="number2">Number 2:</label>
+			<input type="number" id="number2" name="number2" required>
+
+			<br>
+
+			<!-- Submit Button -->
+			<input type="submit" value="Submit">
+
+		</form>
+
+	<button onclick="submitSelections()">
+		<span>Traži</span>
+	</button>
+
+
 					<script>
 						function toggleSelection(item) {
 							item.classList.toggle("selected");
