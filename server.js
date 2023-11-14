@@ -480,7 +480,8 @@ app.post('/azuriraj_ocjene', async (req, res) => {
 
 app.get('/search-results', (req, res) => {
     let preferencije = req.query.preference;
-
+    let dob=req.query.number2;
+    console.log(dob);
     // Ako je preferencije string, pretvori ga u niz
     if (typeof preferencije === 'string') {
         preferencije = [preferencije];

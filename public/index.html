@@ -246,7 +246,7 @@
 			<option value="50plus">50+</option>
 		</select>
 	</form>
-		<form action="/submit_numbers" method="post">
+		<form action="/submit_numbers" method="post" id="nesto_vamo">
 
 			<!-- First Number Input -->
 			<label for="number1">Number 1:</label>
@@ -261,7 +261,7 @@
 			<br>
 
 			<!-- Submit Button -->
-			<input type="submit" value="Submit">
+			<input type="submit" value="Submit" onclick="submitSelections()">
 
 		</form>
 
@@ -276,27 +276,32 @@
 						}
 
 						function submitSelections() {
-							// Dohvat odabranih elemenata s klasom "selected"
-							let selectedItems = document.querySelectorAll('.selected');
-							let selectedPreferences = [];
 
-							// Iteracija kroz odabrane elemente i dohvat vrijednosti
-							selectedItems.forEach(item => {
-								let h4Element = item.querySelector('h4');
-								if (h4Element) {
-									let preference = h4Element.textContent; // Ako postoji h4 element, dohvati tekst
-									selectedPreferences.push(preference);
-								}
-							});
+								// Dohvat podataka iz input polja
+								const age = document.getElementById('age').value;
+								const number1 = document.getElementById('number1').value;
+								const number2 = document.getElementById('number2').value;
 
-							if (selectedPreferences.length > 0) {
+								// Dohvat odabranih elemenata s klasom "selected"
+								let selectedItems = document.querySelectorAll('.selected');
+								let selectedPreferences = [];
+
+								// Iteracija kroz odabrane elemente i dohvat vrijednosti
+								selectedItems.forEach(item => {
+									let h4Element = item.querySelector('h4');
+									if (h4Element) {
+										let preference = h4Element.textContent; // Ako postoji h4 element, dohvati tekst
+										selectedPreferences.push(preference);
+									}
+								});
+
 								// Kreiranje URL-a sa parametrima
 								let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
+								queryParams += `&age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
+
 								// Preusmjeravanje na novu stranicu
 								window.location.href = `/search-results?${queryParams}`;
-							} else {
-								alert("Please select at least one item before submitting");
-							}
+
 						}
 					</script>
 
