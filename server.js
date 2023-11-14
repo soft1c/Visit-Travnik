@@ -25,23 +25,19 @@ const sampleData = [
     { name: 'Fast Food', type: 'restaurant' },
     { name: 'Kafa', type: 'drinks' },
     { name: 'Stari Grad', type: 'history' },
-    { name: 'Plava Voda', type: 'park' },
     { name: 'Tradicionalna hrana', type: 'restaurant' },
     { name: 'Restorani', type: 'restaurant' },
-    { name: 'Muzej', type: 'history' },
-    { name: 'Parkovi', type: 'park' },
-    { name: 'Džamije', type: 'religion' },
-    { name: 'Crkve', type: 'religion' },
+    { name: 'Priroda', type: 'znamenitosti' },
     { name: 'Zabava', type: 'drinks' },
-    {name: 'Ćiro', type: 'history'},
-    {name: 'Vlašić', type: 'park'}
+    { name: 'Historijske Znamenitosti', type: 'znamenitosti' },
+    { name: 'Vjerske Znamenitosti', type: 'znamenitosti' }
 ];
 
 const tabela=[
     {name:'Ćevapi', type : 'hrana_cevapi'},
     {name:'FastFood', type:'hrana_fast_food'},
     {name:'Tradicionalno',type:'hrana_tradiocionalno'},
-    {name:'Restoran',type:'hrana_restoran'}
+    {name:'Restorani',type:'hrana_restoran'}
 
 ];
 
@@ -130,16 +126,18 @@ function dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, ti
     if (!Array.isArray(tipovi)) {
         tipovi = [tipovi];
     }
+    console.log("Ovo su tipovi: ",tipovi);
 
     lokacije.forEach(lokacija => {
         let rezultat = 0;
-        console.log(tipovi);
+
         tipovi.forEach(tip => {
             const korelacija = tabela.find(item => item.name === tip);
             if (korelacija) {
                 const atribut = korelacija.type;
 
                 // Dodaj ocjenu na osnovu tipa
+                console.log(lokacija[atribut]);
                 rezultat += lokacija[atribut];
             } else {
                 console.log(`Nije pronađena korelacija za tip: ${tip}`);
@@ -175,6 +173,8 @@ function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odlaska,t
     if (!Array.isArray(lokacije)) {
         lokacije = [lokacije];
     }
+    console.log("Ovo su tipovi: ",tipovi);
+
     let najbolji = [];
     lokacije.forEach(lokacija => {
         let rezultat = 0;
@@ -223,6 +223,8 @@ function dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tipovi){
     if (!Array.isArray(lokacije)) {
         lokacije = [lokacije];
     }
+    console.log("Ovo su tipovi: ",tipovi);
+
 
     lokacije.forEach(lokacija => {
         let rezultat = 0;
@@ -364,13 +366,13 @@ app.post('/delete_event', (req, res) => {
 });
 
 app.post('/add_place', (req, res) => {
-    const { placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fastfood, kafa, pice, provod, lokacija, turisticki_znacaj } = req.body;
+    const { placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno,hrana_restoran, hrana_fastfood, kafa, pice, provod, lokacija, turisticki_znacaj } = req.body;
     console.log(req.body);
     let ocjena_pocetna=0;
     console.log(lokacija);
     lokacije.run(
-        'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fast_food, kafa, pice, provod, lokacija, turisticki_znacaj, ocjena) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)',
-        [placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno, hrana_fastfood, kafa, pice, provod, lokacija, turisticki_znacaj,ocjena_pocetna],
+        'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno,hrana_restoran, hrana_fast_food, kafa, pice, provod, lokacija, turisticki_znacaj, ocjena) VALUES (?, ?, ?, ?, ?, ?, ?, ,??, ?, ?, ?, ?, ?,?, ?, ?, ?)',
+        [placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, hrana_cevapi, hrana_tradicionalno,hrana_restoran, hrana_fastfood, kafa, pice, provod, lokacija, turisticki_znacaj,ocjena_pocetna],
         (err) => {
             if (err) {
                 console.error(err);
@@ -592,7 +594,10 @@ app.post('/azuriraj_ocjene', async (req, res) => {
     }
 });
 
-
+function getCategory(preference) {
+    const foundItem = sampleData.find(item => item.name === preference);
+    return foundItem ? foundItem.type : null;
+}
 
 app.get('/search-results', (req, res) => {
     let preferencije = req.query.preference;
@@ -600,26 +605,39 @@ app.get('/search-results', (req, res) => {
     let vrijeme_dolaska=req.query.number1;
     let dob=req.query.age;
     console.log(dob,vrijeme_dolaska,vrijeme_odlaska);
-    // Ako je preferencije string, pretvori ga u niz
+
     if (typeof preferencije === 'string') {
         preferencije = [preferencije];
     }
     console.log(preferencije);
-    preferencije.forEach(preferencija => {
-        console.log(preferencija);
+
+    const kategorije = [... new Set(preferencije.map(pref=>getCategory(pref)))];
+    kategorije.forEach(kategorija => {
+        console.log(kategorija);
         // Pronalaženje odgovarajućeg objekta u mapi sampleData
-        const foundItem = sampleData.find(item => item.name === preferencija);
+        //const foundItem = sampleData.find(item => item.name === kategorija);
 
         // Provjera da li je pronađen odgovarajući objekat
-        if (foundItem) {
+        if (kategorija) {
             // Ispisivanje imena preferencije i njenog tipa
-            console.log(`Type for ${preferencija}: ${foundItem.type}`);
-            dajLokacije(foundItem.type,(err,lokacije)=>{
+            dajLokacije(kategorija,(err,lokacije)=>{
                 if(err){
                     console.log('Nije dobro nesto');
                 }else{
                     //console.log(foundItem);
-                    dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,preferencije);
+                    console.log("Ovdje sam");
+                    if(kategorija==='znamenitosti'){
+                        const znamenitostiPreferencije = preferencije.filter(pref => znamenitosti.some(z => z.name === pref));
+                        dajNajboljuZnamenitost(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,znamenitostiPreferencije);
+                    }else if(kategorija==='drinks'){
+                        const drinksPreferencije = preferencije.filter(pref => pica.some(p => p.name === pref));
+                        dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,drinksPreferencije);
+                    }else if(kategorija==='restaurant'){
+                        const restaurantPreferencije = preferencije.filter(pref => tabela.some(t => t.name === pref));
+                        dajNajboljiRestoran(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,restaurantPreferencije);
+                    }else{
+                        console.log("jebi ga");
+                    }
                 }
             })
 
