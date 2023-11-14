@@ -129,10 +129,42 @@ $(document).ready(function(){
           }
         })
   };
-
-
-
-
-
-
  });
+
+
+
+
+
+// Sample language data
+const languageData = {
+    en: {
+        'page-title': 'Your Website',
+        'welcome-heading': 'Welcome to our website!',
+        'intro-text': 'This is a sample content.',
+        // Add more translations as needed
+    },
+    fr: {
+        'page-title': 'Votre site web',
+        'welcome-heading': 'Bienvenue sur notre site web!',
+        'intro-text': 'Ceci est un contenu d\'exemple.',
+        // Add more translations as needed
+    },
+    // Add more languages as needed
+};
+
+function changeLanguage(language) {
+    // Update page content based on selected language
+    Object.keys(languageData[language]).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+            element.textContent = languageData[language][key];
+        }
+    });
+
+    // Update page title
+    document.getElementById('page-title').textContent = languageData[language]['page-title'];
+}
+
+// Initialize with the default language (e.g., English)
+changeLanguage('en');
+
