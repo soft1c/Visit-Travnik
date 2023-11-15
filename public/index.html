@@ -22,7 +22,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-oSNjcXCCNEI7uZgo2FzFv5ViZ5zCFs2UZ5QytwQLvud+pbj4bcP/r5S9VJBv4e9CA" crossorigin="anonymous">
 
 </head>
-<body style="background-color: #222031">
+<body style="background-color: #F4F3EA">
 <div class="portfolio-wrap">
 	<header class="default-header">
 		<nav class="navbar navbar-expand-lg  navbar-light">
@@ -37,10 +37,10 @@
 				</button>
 				<div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
 					<ul class="navbar-nav">
-						<li style="margin-top: -15px; margin-right: -18px;color:#efe1f7"><a href="#portfolio">Preferencije</a></li>
-						<li style="margin-top: -15px; margin-right: -22px;color:#efe1f7"><a href="/recenzije">Recenzije</a></li>
-						<li style="margin-top: -15px; margin-right: -26px;color:#efe1f7"><a href="#events-container">Događaji</a></li>
-						<li style="margin-top: -15px; margin-right: -30px;color:#efe1f7"><a href="Pages-inside/About.html">About Us</a></li>
+						<li style="margin-top: -15px; margin-right: -18px;color:#d41e17"><a href="#portfolio">Preferencije</a></li>
+						<li style="margin-top: -15px; margin-right: -22px;color:#d41e17"><a href="/recenzije">Recenzije</a></li>
+						<li style="margin-top: -15px; margin-right: -26px;color:#d41e17"><a href="#events-container">Događaji</a></li>
+						<li style="margin-top: -15px; margin-right: -30px;color:#d41e17"><a href="Pages-inside/About.html">About Us</a></li>
 					</ul>
 				</div>
 			</div>
@@ -51,137 +51,134 @@
 		<div class="container">
 			<div class="row fullscreen d-flex align-items-center justify-content-center">
 				<div class="banner-content col-lg-10">
-					<h5 style="color: #e9e9e8;font-size:15px; margin-top: -100px" class="text-uppercase">Vezirski Grad</h5>
-					<h1 style="margin-top: -2px; color:#e9e9e8">Posjeti Travnik!</h1>
+					<h5 style="color: #e8e7ea;font-size:15px; margin-top: -100px" class="text-uppercase">Vezirski Grad</h5>
+					<h1 style="margin-top: -2px; color:#e8e7ea">Posjeti Travnik!</h1>
 				</div>
 			</div>
 		</div>
 	</section>
 </div>
-<section class="portfolio-area section-gap" id="portfolio">
-				  <div class="container">
-					  <div style="background-position: center;height: 200px; background-color: #579797; margin-right: 22%; margin-left: 22%;box-shadow: 0px 0px 10px #15aabf;">
-						<div class="row d-flex justify-content-center">
-							<div class="menu-content col-lg-10">
-								<div class="title text-center">
-										<h1 class="mb-10" style="color:#efe1f7; margin-top: 15px;">Odaberite vaše preferncije:</h1>
-								</div>
+<div class="card">
+	<section class="portfolio-area section-gap" id="portfolio">
+		<div class="container">
+			<div style="background-position:center;margin-top:-55px;height: 200px; background-color: #D3AC2B; box-shadow: 0px 0px 10px #D3AC2B ;margin-right: 22%; margin-left: 22%;">
+				<div class="row d-flex justify-content-center">
+					<div class="menu-content col-lg-10">
+						<div class="title text-center">
+							<h1 class="mb-10" style="color:#F4F3EA; margin-top: 15px;font-weight: bold">Odaberite vaše preferncije:</h1>
+						</div>
+					</div>
+				</div>
+				<div class="filters">
+					<ul>
+						<li class="active" data-filter="*">Sve</li>
+						<li  data-filter=".hrana">Hrana</li>
+						<li  data-filter=".pice">Piće</li>
+						<li  data-filter=".znamenitosti">Znamenitosti</li>
+
+					</ul>
+				</div>
+			</div>
+
+			<div class="filters-content">
+				<div class="row grid">
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)" >
+							<img src="img/cevapi.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Ćevapi</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Hrana</div>
 							</div>
 						</div>
-				    <div class="filters">
-				      <ul>
-				        <li class="active" data-filter="*">Sve</li>
-				        <li  data-filter=".hrana">Hrana</li>
-				        <li  data-filter=".pice">Piće</li>
-				        <li  data-filter=".znamenitosti">Znamenitosti</li>
-
-				      </ul>
-				    </div>
-					  </div>
-
-				    <div class="filters-content">
-				      <div class="row grid">
-				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
-				          <div class="item" onclick="toggleSelection(this)" >
-				            <img src="img/cevapi.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Ćevapi</h4>
-				              <div style="color: #579797" class="cat">Hrana</div>
-				            </div>
-				          </div>
-				        </div>
-				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-				          <div class="item" onclick="toggleSelection(this)">
-				            <img src="img/sok_naranca.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Kafići</h4>
-				              <div style="color: #579797" class="cat">Piće</div>
-				            </div>
-				          </div>
-				        </div>
-				        <div class="single-portfolio  col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all znamenitosti">
-				          <div class="item" onclick="toggleSelection(this)">
-				            <img src="img/vlasic.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Priroda</h4>
-				              <div style="color: #579797" class="cat">Znamenitosti</div>
-				            </div>
-				          </div>
-				        </div>
-
-				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
-				          <div class="item" onclick="toggleSelection(this)">
-				            <img src="img/hamburger.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Fast Food</h4>
-				              <div style="color: #579797" class="cat">Hrana</div>
-				            </div>
-				          </div>
-				        </div>
-				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-				          <div class="item" onclick = "toggleSelection(this)">
-				            <img src="img/kahva.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Kafa</h4>
-				              <div style="color: #579797" class="cat">Piće</div>
-				            </div>
-				          </div>
-				        </div>
-				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all znamenitosti">
-				          <div class="item" onclick="toggleSelection(this)">
-				            <img src="img/stari_grad.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Historijske Znamenitosti</h4>
-				              <div style="color: #579797" class="cat">Znamenitosti</div>
-				            </div>
-				          </div>
-				        </div>
-
-				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
-				          <div class="item" onclick="toggleSelection(this)">
-				            <img src="img/tradicionalno.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Tradicionalna hrana</h4>
-				              <divv style="color: #579797" class="cat">Hrana</divv>
-				            </div>
-				          </div>
-				        </div>
-				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
-				          <div class="item" onclick="toggleSelection(this)">
-				            <img src="img/restoran.jpg" alt="Work 1" class="img-fluid">
-				            <div class="p-inner">
-				              <h4 style="color: #efe1f7; font-weight: bold">Restorani</h4>
-				              <div style="color: #579797" class="cat">Hrana</div>
-				            </div>
-				          </div>
-				        </div>
-
-						  <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all znamenitosti">
-							  <div class="item" onclick="toggleSelection(this)">
-								  <img src="img/sarena_dzamija.jpg" alt="Work 1" class="img-fluid">
-								  <div class="p-inner">
-									  <h4 style="color: #efe1f7; font-weight: bold">Vjerske Znamenitosti</h4>
-									  <div style="color: #579797" class="cat">Znamenitosti</div>
-								  </div>
-							  </div>
-
-						  </div>
-
-						  <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-							  <div class="item" onclick="toggleSelection(this)">
-								  <img src="img/disco.jpg" alt="Work 1" class="img-fluid">
-								  <div class="p-inner">
-									  <h4 style="color: #efe1f7; font-weight: bold">Zabava</h4>
-									  <div style="color: #579797" class="cat">Pice</div>
-								  </div>
-							  </div>
-						  </div>
-
-				  </div>
 					</div>
-				  </div>
-</section>
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/sok_naranca.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Kafići</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Piće</div>
+							</div>
+						</div>
+					</div>
+					<div class="single-portfolio  col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all znamenitosti">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/vlasic.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Priroda</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Znamenitosti</div>
+							</div>
+						</div>
+					</div>
 
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/hamburger.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Fast Food</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Hrana</div>
+							</div>
+						</div>
+					</div>
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
+						<div style="background-color: #ecb43c" class="item" onclick = "toggleSelection(this)">
+							<img src="img/kahva.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Kafa</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Piće</div>
+							</div>
+						</div>
+					</div>
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all znamenitosti">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/stari_grad.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Historijske Znamenitosti</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Znamenitosti</div>
+							</div>
+						</div>
+					</div>
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/tradicionalno.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Tradicionalna hrana</h4>
+								<divv style="color: #fff9e7; font-weight: bold" class="cat">Hrana</divv>
+							</div>
+						</div>
+					</div>
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/restoran.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Restorani</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Hrana</div>
+							</div>
+						</div>
+					</div>
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all znamenitosti">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/sarena_dzamija.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Vjerske Znamenitosti</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Znamenitosti</div>
+							</div>
+						</div>
+					</div>
+					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
+						<div style="background-color: #ecb43c" class="item" onclick="toggleSelection(this)">
+							<img src="img/disco.jpg" alt="Work 1" class="img-fluid">
+							<div class="p-inner">
+								<h4 style="color: #1b1813; font-weight: bold">Zabava</h4>
+								<div style="color: #fff9e7; font-weight: bold" class="cat">Pice</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
 <div id="checklist">
 	<input checked="" value="1" name="age" type="checkbox" id="01">
 	<label for="01">-18</label>
@@ -193,203 +190,197 @@
 	<label for="04">50+</label>
 </div>
 
-		<form action="/submit_numbers" method="post" id="nesto_vamo">
+<form action="/submit_numbers" method="post" id="nesto_vamo">
 
-			<!-- First Number Input -->
-			<label for="number1">Number 1:</label>
-			<input type="number" id="number1" name="number1" required>
+	<!-- First Number Input -->
+	<label for="number1">Number 1:</label>
+	<input type="number" id="number1" name="number1" required>
 
-			<br>
+	<br>
 
-			<!-- Second Number Input -->
-			<label for="number2">Number 2:</label>
-			<input type="number" id="number2" name="number2" required>
+	<!-- Second Number Input -->
+	<label for="number2">Number 2:</label>
+	<input type="number" id="number2" name="number2" required>
 
-			<br>
+	<br>
 
-			<!-- Submit Button -->
-			<input type="submit" value="Submit" onclick="submitSelections()">
+	<!-- Submit Button -->
+	<input type="submit" value="Submit" onclick="submitSelections()">
 
-		</form>
+</form>
 
-	<button onclick="submitSelections()">
-		<span>Traži</span>
-	</button>
+<button onclick="submitSelections()">
+	<span>Traži</span>
+</button>
 
 
-					<script>
+<script>
+	function toggleSelection(item) {
+		console.log("selectao");
+		item.classList.toggle("selected");
+	}
 
-						function toggleSelection(item) {
-							console.log("selectao");
-							item.classList.toggle("selected");
+	function submitSelections() {
+
+		// Dohvat podataka iz input polja
+		const age = document.getElementById('age').value;
+		const number1 = document.getElementById('number1').value;
+		const number2 = document.getElementById('number2').value;
+
+		// Dohvat odabranih elemenata s klasom "selected"
+		let selectedItems = document.querySelectorAll('.selected');
+		let selectedPreferences = [];
+		console.log("submitovanje");
+		// Iteracija kroz odabrane elemente i dohvat vrijednosti
+		selectedItems.forEach(item => {
+			let h4Element = item.querySelector('h4');
+			if (h4Element) {
+				let preference = h4Element.textContent; // Ako postoji h4 element, dohvati tekst
+				selectedPreferences.push(preference);
+			}
+		});
+
+		// Kreiranje URL-a sa parametrima
+		//let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
+		//queryParams += `&age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
+
+		const requestData = {
+			preference: selectedPreferences,
+			age,
+			number1,
+			number2,
+		};
+		// Preusmjeravanje na novu stranicu
+		fetch('/search-results',{
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(requestData),
+		})
+				.then(response=>response.json())
+				.then(data=>{
+					window.location.href = `/result-page?age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
+				})
+				.catch(error=>{
+					console.error('Error submitting selections: ',error);
+				});
+
+	}
+</script>
+
+
+
+<h3>Dolazeći događaji</h3>
+
+
+
+
+<div class="container" id="events-container">
+
+</div>
+
+<script>
+	function fetchAndDisplayEvents() {
+		fetch('/events')
+				.then(response => response.json())
+				.then(events => {
+					const eventsContainer = document.getElementById('events-container');
+					let currentRow;
+					console.log("Desava se nesto");
+					// ...
+					events.forEach((event, index) => {
+						if (index % 3 === 0) {
+							currentRow = document.createElement('div');
+							currentRow.className = 'row';
+							eventsContainer.appendChild(currentRow);
 						}
 
-						function submitSelections() {
-							// Dohvat podataka iz input polja
-							const ageElement = document.querySelector('input[name="age"]:checked');
-							const number1 = document.getElementById('number1').value;
-							const number2 = document.getElementById('number2').value;
+						const colDiv = document.createElement('div');
+						colDiv.className = 'col-sm-12 col-md-6 col-lg-4 mb-4';
 
-							// Check if ageElement is not null before accessing its value
-							const age = ageElement ? ageElement.value : null;
+						const eventCard = document.createElement('div');
+						eventCard.className = 'card text-dark card-has-bg click-col event-card';
+						eventCard.style.backgroundImage = `url(${event.picture})`;
 
-							// Dohvat odabranih elemenata s klasom "selected"
-							let selectedItems = document.querySelectorAll('.selected');
-							let selectedPreferences = [];
-							console.log("submitovanje");
+						const eventImage = document.createElement('img');
+						eventImage.className = 'card-img d-none';
+						eventImage.src = event.picture;
+						eventImage.alt = 'Event Image';
+						console.log("adel");
 
-							// Iteracija kroz odabrane elemente i dohvat vrijednosti
-							selectedItems.forEach(item => {
-								let h4Element = item.querySelector('h4');
-								if (h4Element) {
-									let preference = h4Element.textContent; // Ako postoji h4 element, dohvati tekst
-									selectedPreferences.push(preference);
-								}
-							});
+						const eventOverlay = document.createElement('div');
+						eventOverlay.className = 'card-img-overlay d-flex flex-column';
 
-							// Kreiranje URL-a sa parametrima
-							//let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
-							//queryParams += `&age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
+						const eventBody = document.createElement('div');
+						eventBody.className = 'card-body';
 
-							const requestData = {
-								preference: selectedPreferences,
-								age,
-								number1,
-								number2,
-							};
-							// Preusmjeravanje na novu stranicu
-							fetch('/search-results', {
-								method:'POST',
-								headers: {
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify(requestData),
-							})
-									.then(response => response.json())
-									.then(data => {
-										console.log(data);
-										localStorage.setItem('serverResponse', JSON.stringify(data));
-										window.location.href = '/result-page';
-									})
-									.catch(error => {
-										console.error('Error submitting selections: ', error);
-									});
-						}
-					</script>
+						const eventMeta = document.createElement('small');
+						eventMeta.className = 'card-meta mb-2';
+
+						const eventName = document.createElement('h4');
+						eventName.className = 'card-title mt-0';
+						const eventLink = document.createElement('a');
+						eventLink.className = 'text-dark';
+						eventLink.href = event.url;
+						eventLink.textContent = event.name;
+
+						eventName.appendChild(eventLink);
+
+						const eventDate = document.createElement('small');
+						eventDate.innerHTML = `<i class="far fa-clock"></i> ${event.datum}`;
+
+						eventBody.appendChild(eventMeta);
+						eventBody.appendChild(eventName);
+						eventBody.appendChild(eventDate);
+						eventOverlay.appendChild(eventBody);
 
 
+						const eventDescription = document.createElement('p');
+						eventDescription.className ='event-description';
+						eventDescription.textContent = event.opis;
+						eventOverlay.appendChild(eventDescription);
 
-				<h3>Dolazeći događaji</h3>
+						const cardFooter = document.createElement('div');
+						cardFooter.className = 'card-footer';
+						const media = document.createElement('div');
+						media.className = 'media';
+						const avatarImg = document.createElement('img');
+						avatarImg.className = 'mr-3 rounded-circle';
+						avatarImg.src = 'https://assets.codepen.io/460692/internal/avatars/users/default.png?format=auto&version=1688931977&width=80&height=80';
+						avatarImg.alt = 'Generic placeholder image';
+						avatarImg.style.maxWidth = '50px';
+						const mediaBody = document.createElement('div');
+						mediaBody.className = 'media-body';
+						const mediaTitle = document.createElement('h6');
+						mediaTitle.className = 'my-0 text-dark d-block';
+						mediaTitle.textContent = 'Oz Coruhlu';
+						const mediaSubtitle = document.createElement('small');
+						mediaSubtitle.textContent = 'Director of UI/UX';
 
+						mediaBody.appendChild(mediaTitle);
+						mediaBody.appendChild(mediaSubtitle);
+						media.appendChild(avatarImg);
+						media.appendChild(mediaBody);
+						cardFooter.appendChild(media);
 
+						eventCard.appendChild(eventImage);
+						eventCard.appendChild(eventOverlay);
+						eventCard.appendChild(cardFooter);
 
+						colDiv.appendChild(eventCard);
+						currentRow.appendChild(colDiv);
+					});
 
-					<div class="container" id="events-container">
+				})
+				.catch(error => {
+					console.error("Error fetching events: ", error);
+				});
+	}
 
-					</div>
-
-				<script>
-					function fetchAndDisplayEvents() {
-						fetch('/events')
-								.then(response => response.json())
-								.then(events => {
-									const eventsContainer = document.getElementById('events-container');
-									let currentRow;
-									console.log("Desava se nesto");
-									// ...
-									events.forEach((event, index) => {
-										if (index % 3 === 0) {
-											currentRow = document.createElement('div');
-											currentRow.className = 'row';
-											eventsContainer.appendChild(currentRow);
-										}
-
-										const colDiv = document.createElement('div');
-										colDiv.className = 'col-sm-12 col-md-6 col-lg-4 mb-4';
-
-										const eventCard = document.createElement('div');
-										eventCard.className = 'card text-dark card-has-bg click-col event-card';
-										eventCard.style.backgroundImage = `url(${event.picture})`;
-
-										const eventImage = document.createElement('img');
-										eventImage.className = 'card-img d-none';
-										eventImage.src = event.picture;
-										eventImage.alt = 'Event Image';
-										console.log("adel");
-
-										const eventOverlay = document.createElement('div');
-										eventOverlay.className = 'card-img-overlay d-flex flex-column';
-
-										const eventBody = document.createElement('div');
-										eventBody.className = 'card-body';
-
-										const eventMeta = document.createElement('small');
-										eventMeta.className = 'card-meta mb-2';
-
-										const eventName = document.createElement('h4');
-										eventName.className = 'card-title mt-0';
-										const eventLink = document.createElement('a');
-										eventLink.className = 'text-dark';
-										eventLink.href = event.url;
-										eventLink.textContent = event.name;
-
-										eventName.appendChild(eventLink);
-
-										const eventDate = document.createElement('small');
-										eventDate.innerHTML = `<i class="far fa-clock"></i> ${event.datum}`;
-
-										eventBody.appendChild(eventMeta);
-										eventBody.appendChild(eventName);
-										eventBody.appendChild(eventDate);
-										eventOverlay.appendChild(eventBody);
+	fetchAndDisplayEvents();
 
 
-										const eventDescription = document.createElement('p');
-										eventDescription.className ='event-description';
-										eventDescription.textContent = event.opis;
-										eventOverlay.appendChild(eventDescription);
-
-										const cardFooter = document.createElement('div');
-										cardFooter.className = 'card-footer';
-										const media = document.createElement('div');
-										media.className = 'media';
-										const avatarImg = document.createElement('img');
-										avatarImg.className = 'mr-3 rounded-circle';
-										avatarImg.src = 'https://assets.codepen.io/460692/internal/avatars/users/default.png?format=auto&version=1688931977&width=80&height=80';
-										avatarImg.alt = 'Generic placeholder image';
-										avatarImg.style.maxWidth = '50px';
-										const mediaBody = document.createElement('div');
-										mediaBody.className = 'media-body';
-										const mediaTitle = document.createElement('h6');
-										mediaTitle.className = 'my-0 text-dark d-block';
-										mediaTitle.textContent = 'Oz Coruhlu';
-										const mediaSubtitle = document.createElement('small');
-										mediaSubtitle.textContent = 'Director of UI/UX';
-
-										mediaBody.appendChild(mediaTitle);
-										mediaBody.appendChild(mediaSubtitle);
-										media.appendChild(avatarImg);
-										media.appendChild(mediaBody);
-										cardFooter.appendChild(media);
-
-										eventCard.appendChild(eventImage);
-										eventCard.appendChild(eventOverlay);
-										eventCard.appendChild(cardFooter);
-
-										colDiv.appendChild(eventCard);
-										currentRow.appendChild(colDiv);
-									});
-
-								})
-								.catch(error => {
-									console.error("Error fetching events: ", error);
-								});
-					}
-
-					fetchAndDisplayEvents();
-
-
-				</script>
+</script>
 
 
 <footer class="footer-area section-gap">
@@ -433,20 +424,20 @@
 
 
 <script src="js/vendor/jquery-2.2.4.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-			<script src="js/vendor/bootstrap.min.js"></script>
-  			<script src="js/easing.min.js"></script>
-			<script src="js/jquery.ajaxchimp.min.js"></script>
-			<script src="js/jquery.magnific-popup.min.js"></script>
-			<script src="js/owl.carousel.min.js"></script>
-			<script src="js/jquery.sticky.js"></script>
-			<script src="js/jquery.nice-select.min.js"></script>
-			<script src="js/parallax.min.js"></script>
-			<script src="js/mail-script.js"></script>
-			<script src="js/isotope.pkgd.min.js"></script>
-			<script src="js/main.js"></script>
-		</body>
-	</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/easing.min.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/parallax.min.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/isotope.pkgd.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
 
 
 

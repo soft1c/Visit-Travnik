@@ -719,7 +719,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .is-sticky .default-header {
-  background-color: rgba(15, 45, 60, 0.9);
+  background-color: rgba(51, 61, 81, 0.9);
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
@@ -769,14 +769,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .navbar-nav a {
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 12px;
-  color: #fff;
+  color: #fefefe;
   padding: 20px;
 }
 
 .navbar-nav a:hover {
-  color: #fb5a5d;
+  color: #f09eb0;
 }
 
 @media (max-width: 992px) {
@@ -845,7 +845,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 10px;
   background: url(../public/img/pozadina.jpg) center;
   background-size: cover;
-  box-shadow: 0px 0px 40px #15aabf;
+  box-shadow: 0px 0px 40px #333D51;
 }
 
 @media (max-width: 1199.98px) {
@@ -955,7 +955,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .portfolio-area .filters ul li.active {
-  color: #efe1f7;
+  color: #F4F3EA;
+  font-weight: bold;
 }
 
 .portfolio-area .filters-content {
@@ -978,10 +979,11 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
   cursor: pointer;
   margin-bottom: 30px;
+  border-radius: 16px;
 }
 
 .portfolio-area .filters-content .item img {
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 img{
@@ -990,13 +992,11 @@ img{
 }
 
 .single-portfolio:hover .item {
-  border: 4px solid rgb(251, 90, 90);
-  border-radius: 13px;/* Gray border on hover */
+  box-shadow: 0px 0px 10px #D3AC2B ;
 }
 
 .single-portfolio .item.selected {
-  border: 4px solid #24e097;
-  border-radius :13px;/* Green border when selected */
+  box-shadow: 0px 0px 20px #D3AC2B ;
 }
 
 .portfolio-area .filters-content .item .p-inner {
@@ -1191,10 +1191,10 @@ h6 {
 .switch-wrap p {
   margin: 0;
 }
- .centered-button {
-   text-align: center;
-   margin-top: 10px;
- }
+.centered-button {
+  text-align: center;
+  margin-top: 10px;
+}
 
 .centered-button button {
   padding: 20px 40px;
@@ -1318,14 +1318,14 @@ h1 {
   background-color: rgba(4, 9, 30, 0.8);
   color: #fff;
 }
-  .transparent {
-    background-color: rgba(4, 9, 30, 0.8);
-    transition: background-color 0.3s ease;
-  }
+.transparent {
+  background-color: rgba(4, 9, 30, 0.8);
+  transition: background-color 0.3s ease;
+}
 
-  .transparent.scrolled {
-    background-color:transparent ;
-  }
+.transparent.scrolled {
+  background-color:transparent ;
+}
 
 
 
@@ -1666,10 +1666,13 @@ button:hover span {
 
 
 
+.card {
+  width: 90%;
+  margin-left:5%;
+  border-radius: 30px;
+  background: #333D51;
+  margin-top: 10px;
+  box-shadow: 5px 5px 30px #333D51,
+  -5px -5px 30px #333D51;
+}
 
-/* boje
-#222031
-#efe1f7
-#fb5a5d
-#579797
- */
