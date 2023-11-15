@@ -21,17 +21,17 @@ app.use('/css/public/fonts', express.static(path.join(__dirname, 'public', 'font
 app.use(express.json());
 app.use(bodyParser.json());
 const sampleData = [
-    { name: 'Ćevapi', type: 'restaurant' },
-    { name: 'Kafići', type: 'drinks' },
-    { name: 'Fast Food', type: 'restaurant' },
-    { name: 'Kafa', type: 'drinks' },
-    { name: 'Stari Grad', type: 'history' },
-    { name: 'Tradicionalna hrana', type: 'restaurant' },
-    { name: 'Restorani', type: 'restaurant' },
-    { name: 'Priroda', type: 'znamenitosti' },
-    { name: 'Zabava', type: 'drinks' },
-    { name: 'Historijske Znamenitosti', type: 'znamenitosti' },
-    { name: 'Vjerske Znamenitosti', type: 'znamenitosti' }
+    { name: 'Ćevapi', type: 'Hrana' },
+    { name: 'Kafići', type: 'Pice' },
+    { name: 'Fast Food', type: 'Hrana' },
+    { name: 'Kafa', type: 'Pice' },
+    { name: 'Stari Grad', type: 'Znamenitost' },
+    { name: 'Tradicionalna hrana', type: 'Hrana' },
+    { name: 'Restorani', type: 'Hrana' },
+    { name: 'Priroda', type: 'Znamenitost' },
+    { name: 'Zabava', type: 'Pice' },
+    { name: 'Historijske Znamenitosti', type: 'Znamenitost' },
+    { name: 'Vjerske Znamenitosti', type: 'Znamenitost' }
 ];
 
 const tabela=[
@@ -43,7 +43,7 @@ const tabela=[
 ];
 
 const novaTabela=[
-    {name:'tip1', type:['Ćevapi,Sok,Historija']},
+    {name:'tip1', type:['Ćevapi','Sok','Historija']},
     {name:'tip2', type:['FastFood','Kafa','Religija']},
     {name:'tip3', type:['Tradicionalno','Provod','Priroda']},
     {name:'tip4', type:['Restorani','Raja','Značaj']}
@@ -192,6 +192,7 @@ async function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odl
     console.log("Ovo su tipovi: ", tipovi);
 
     lokacije.forEach(lokacija => {
+        console.log(lokacija);
         let rezultat = 0;
 
         tipovi.forEach(tip => {
@@ -637,6 +638,7 @@ app.post('/search-results', async (req, res) => {
 
         // Provjera da li je pronađen odgovarajući objekat
         if (kategorija) {
+            console.log(kategorija);
             // Ispisivanje imena preferencije i njenog tipa
             return new Promise((resolve, reject) => {
                 dajLokacije(kategorija, async (err, lokacije) => {
@@ -645,17 +647,17 @@ app.post('/search-results', async (req, res) => {
                         reject(err);
                     } else {
                         console.log("Ovdje sam");
-                        if (kategorija === 'znamenitosti') {
+                        if (kategorija === 'Znamenitost') {
                             const znamenitostiPreferencije = preferencije.filter(pref => znamenitosti.some(z => z.name === pref));
                             rezultati[kategorija] = await dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, znamenitostiPreferencije);
                             console.log("U petlji ", rezultati[kategorija]);
                             resolve();
-                        } else if (kategorija === 'drinks') {
+                        } else if (kategorija === 'Pice') {
                             const drinksPreferencije = preferencije.filter(pref => pica.some(p => p.name === pref));
                             rezultati[kategorija] = await dajNajboljiKafic(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, drinksPreferencije);
                             console.log("U petlji ", rezultati[kategorija]);
                             resolve();
-                        } else if (kategorija === 'restaurant') {
+                        } else if (kategorija === 'Hrana') {
                             const restaurantPreferencije = preferencije.filter(pref => tabela.some(t => t.name === pref));
                             rezultati[kategorija] = await dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, restaurantPreferencije);
                             console.log("U petlji ", rezultati[kategorija]);
@@ -675,7 +677,7 @@ app.post('/search-results', async (req, res) => {
         await Promise.all(promises);
 
         // Slanje odgovora
-        //console.log("Poslao: ",rezultati.restaurant[0].lokacija);
+        console.log("Poslao: ",rezultati.Hrana);
         res.json({ status: 'success', message: 'Data received successfully.', results: rezultati });
     } catch (error) {
         console.error("Greška prilikom čekanja na asinkrone pozive:", error);
