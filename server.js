@@ -15,9 +15,9 @@ const app = express()
 
 app.use(express.static('public'));
 app.use(session({secret:'your_secret_key',resave: false, saveUninitialized:true}));
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.urlencoded({extended:true}));
 app.use('/css/public/fonts', express.static(path.join(__dirname, 'public', 'fonts')));
-
+app.use(express.json());
 
 const sampleData = [
     { name: 'Ćevapi', type: 'restaurant' },
@@ -599,11 +599,15 @@ function getCategory(preference) {
     return foundItem ? foundItem.type : null;
 }
 
-app.get('/search-results', (req, res) => {
-    let preferencije = req.query.preference;
-    let vrijeme_odlaska=req.query.number2;
-    let vrijeme_dolaska=req.query.number1;
-    let dob=req.query.age;
+app.post('/search-results', (req, res) => {
+    console.log(req.body);
+    console.log(req.query);
+
+    let preferencije = req.body.preference;
+    console.log(preferencije);
+    let vrijeme_odlaska=req.body.number2;
+    let vrijeme_dolaska=req.body.number1;
+    let dob=req.body.age;
     console.log(dob,vrijeme_dolaska,vrijeme_odlaska);
 
     if (typeof preferencije === 'string') {

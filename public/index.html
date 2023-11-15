@@ -255,11 +255,29 @@ u
 								});
 
 								// Kreiranje URL-a sa parametrima
-								let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
-								queryParams += `&age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
+								//let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
+								//queryParams += `&age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
 
+							const requestData = {
+								preference: selectedPreferences,
+								age,
+								number1,
+								number2,
+							};
 								// Preusmjeravanje na novu stranicu
-								window.location.href = `/search-results?${queryParams}`;
+								fetch('/search-results',{
+									headers: {
+										'Content-Type': 'application/json',
+									},
+									body: JSON.stringify(requestData),
+								})
+										.then(response=>response.json())
+										.then(data=>{
+											window.location.href = `/result-page?age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
+										})
+										.catch(error=>{
+											console.error('Error submitting selections: ',error);
+										});
 
 						}
 					</script>
