@@ -148,6 +148,7 @@ async function dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlas
 
 
         if (vrijeme_dolaska > lokacija.kraj_radnog_vremena || vrijeme_odlaska < lokacija.pocetak_radnog_vremena) {
+            console.log("ovjde jebe");
             rezultat = 0;
         }
 
