@@ -21,7 +21,7 @@
 
 body {
   color: #777777;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Copperplate Gothic Bold';
   font-size: 14px;
   font-weight: 300;
   line-height: 1.625em;
@@ -719,11 +719,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .is-sticky .default-header {
-  background-color: rgba(4, 9, 30, 0.8);
+  background-color: rgba(15, 45, 60, 0.9);
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+  height: 10%;
 }
 
 .collapse.show {
@@ -758,7 +759,7 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 9;
+  z-index: 10;
 }
 
 .navbar-light .navbar-toggler {
@@ -775,7 +776,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-nav a:hover {
-  color: #8ab92d;
+  color: #fb5a5d;
 }
 
 @media (max-width: 992px) {
@@ -840,10 +841,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .banner-area {
-  margin-top: -96px;
+  margin-top: -100px;
   border-radius: 10px;
   background: url(../public/img/pozadina.jpg) center;
   background-size: cover;
+  box-shadow: 0px 0px 40px #15aabf;
 }
 
 @media (max-width: 1199.98px) {
@@ -953,7 +955,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .portfolio-area .filters ul li.active {
-  color: #8ab92d;
+  color: #efe1f7;
 }
 
 .portfolio-area .filters-content {
@@ -988,12 +990,12 @@ img{
 }
 
 .single-portfolio:hover .item {
-  border: 4px solid rgb(128, 128, 128);
+  border: 4px solid rgb(251, 90, 93);
   border-radius: 13px;/* Gray border on hover */
 }
 
 .single-portfolio .item.selected {
-  border: 4px solid green;
+  border: 4px #fb5a5d;
   border-radius :13px;/* Green border when selected */
 }
 
@@ -1038,7 +1040,7 @@ h6 {
 }
 
 .footer-social a:hover i {
-  color: #8ab92d;
+  color: #9f8a7a;
 }
 
 .footer-social i {
@@ -1395,26 +1397,26 @@ h1 {
 
 
 
-
+/*dugme trazi */
 button {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  background: #183153;
-  font-family: "Montserrat", sans-serif;
-  box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+  background: #579797;
+  box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   border: none;
   margin-left: 45%;
+  cursor: pointer;
 }
 
 button:after {
   content: " ";
   width: 0%;
   height: 100%;
-  background: #FFD401;
+  background: #fb5a5d;
   position: absolute;
   transition: all 0.4s ease-in-out;
   right: 0;
@@ -1431,7 +1433,7 @@ button span {
   text-decoration: none;
   width: 100%;
   padding: 18px 25px;
-  color: #fff;
+  color: #efe1f7;
   font-size: 1.125em;
   font-weight: 700;
   letter-spacing: 0.3em;
@@ -1440,7 +1442,7 @@ button span {
 }
 
 button:hover span {
-  color: #183153;
+  color: #efe1f7;
   animation: scaleUp 0.3s ease-in-out;
 }
 
@@ -1457,6 +1459,11 @@ button:hover span {
     transform: scale(1);
   }
 }
+
+
+
+
+
 /* Dodani novi stilovi za Contact Us Widget */
 .contact-widget {
   text-align: right;
@@ -1501,3 +1508,168 @@ button:hover span {
 .footer-contact-info a:hover {
   text-decoration: underline;
 }
+
+
+/*checkbox */
+#checklist {
+  --background: #579797;
+  --text: #efe1f7;
+  --check: #222031;
+  --disabled: #efe1f7;
+  --width: 500px;
+  --height: 150px;
+  --border-radius: 10px;
+  background: var(--background);
+  width: var(--width);
+  height: var(--height);
+  border-radius: var(--border-radius);
+  position: center;
+  box-shadow: 0 10px 30px rgba(65, 72, 86, 0.05);
+  padding: 30px 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+#checklist label {
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+#checklist label::before,
+#checklist label::after {
+  content: "";
+  position: absolute;
+}
+
+#checklist label::before {
+  height: 2px;
+  width: 8px;
+  left: -27px;
+  background: var(--check);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+#checklist label:after {
+  height: 4px;
+  width: 4px;
+  top: 8px;
+  left: -25px;
+  border-radius: 50%;
+}
+
+#checklist input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  height: 15px;
+  width: 15px;
+  outline: none;
+  border: 0;
+  margin: 0 15px 0 0;
+  cursor: pointer;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+#checklist input[type="checkbox"]::before,
+#checklist input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  top: auto;
+  background: var(--check);
+  border-radius: 2px;
+}
+
+#checklist input[type="checkbox"]::before {
+  width: 0px;
+  right: 60%;
+  transform-origin: right bottom;
+}
+
+#checklist input[type="checkbox"]::after {
+  width: 0px;
+  left: 40%;
+  transform-origin: left bottom;
+}
+
+#checklist input[type="checkbox"]:checked::before {
+  animation: check-01 0.4s ease forwards;
+}
+
+#checklist input[type="checkbox"]:checked::after {
+  animation: check-02 0.4s ease forwards;
+}
+
+@keyframes check-01 {
+  0% {
+    width: 4px;
+    top: auto;
+    transform: rotate(0);
+  }
+
+  50% {
+    width: 0px;
+    top: auto;
+    transform: rotate(0);
+  }
+
+  51% {
+    width: 0px;
+    top: 8px;
+    transform: rotate(45deg);
+  }
+
+  100% {
+    width: 5px;
+    top: 8px;
+    transform: rotate(45deg);
+  }
+}
+
+@keyframes check-02 {
+  0% {
+    width: 4px;
+    top: auto;
+    transform: rotate(0);
+  }
+
+  50% {
+    width: 0px;
+    top: auto;
+    transform: rotate(0);
+  }
+
+  51% {
+    width: 0px;
+    top: 8px;
+    transform: rotate(-45deg);
+  }
+
+  100% {
+    width: 10px;
+    top: 8px;
+    transform: rotate(-45deg);
+  }
+}
+
+
+
+
+
+
+/* boje
+#222031
+#efe1f7
+#fb5a5d
+#579797
+ */
