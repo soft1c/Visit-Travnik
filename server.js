@@ -651,7 +651,9 @@ app.post('/search-results', (req, res) => {
     res.send('Pogledaj konzolu za rezultate.');
 });
 
-
+app.get('/en',(req,res)=>{
+    res.redirect('/index-en.html');
+})
 
 app.get("*", (req, res) => {
     return res.sendStatus(404)
