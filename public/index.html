@@ -81,7 +81,7 @@
 				    <div class="filters-content">
 				      <div class="row grid">
 				        <div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all hrana">
-				          <div class="item" onclick="toggleSelection(this)">
+				          <div class="item" onclick="toggleSelection(this)" >
 				            <img src="img/cevapi.jpg" alt="Work 1" class="img-fluid">
 				            <div class="p-inner">
 				              <h4 style="color: #efe1f7; font-weight: bold">Ćevapi</h4>
@@ -218,6 +218,7 @@
 
 					<script>
 						function toggleSelection(item) {
+							console.log("selectao");
 							item.classList.toggle("selected");
 						}
 
@@ -231,7 +232,7 @@
 								// Dohvat odabranih elemenata s klasom "selected"
 								let selectedItems = document.querySelectorAll('.selected');
 								let selectedPreferences = [];
-
+								console.log("submitovanje");
 								// Iteracija kroz odabrane elemente i dohvat vrijednosti
 								selectedItems.forEach(item => {
 									let h4Element = item.querySelector('h4');

@@ -990,12 +990,12 @@ img{
 }
 
 .single-portfolio:hover .item {
-  border: 4px solid rgb(251, 90, 93);
+  border: 4px solid rgb(251, 90, 90);
   border-radius: 13px;/* Gray border on hover */
 }
 
 .single-portfolio .item.selected {
-  border: 4px #fb5a5d;
+  border: 4px solid #24e097;
   border-radius :13px;/* Green border when selected */
 }
 
