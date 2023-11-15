@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
+</head>
+<body>
+<h1>Search Results</h1>
+
+<div id="result-container">
+  <!-- Ovdje će se prikazivati rezultati -->
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Dohvati spremljeni odgovor iz localStorage
+    const storedResponse = localStorage.getItem('serverResponse');
+
+    if (storedResponse) {
+      // Otpakiraj podatke
+      const serverResponse = JSON.parse(storedResponse);
+
+      // Prikazi podatke na stranici
+      displayLocations(serverResponse.results.restaurant);
+
+      // Obrisi podatke iz localStorage-a
+      localStorage.removeItem('serverResponse');
+    } else {
+      console.error('Nema spremljenog odgovora sa servera.');
+    }
+  });
+
+  function displayLocations(locations) {
+    // Dohvati HTML element gdje želite prikazati podatke
+    const resultContainer = document.getElementById('result-container');
+
+    // Iteriraj kroz sve lokacije i prikaži podatke
+    locations.forEach(objekt => {
+      console.log(objekt);
+      const locationElement = document.createElement('div');
+      locationElement.innerHTML = `
+            <p>Name: ${objekt.lokacija.name}</p>
+            <p>Type: ${objekt.lokacija.tip}</p>
+            <p>Rating: ${objekt.lokacija.ocjena}</p>
+            <p>Location: ${objekt.lokacija.lokacija}</p>
+            <hr>
+        `;
+      resultContainer.appendChild(locationElement);
+    });
+  }
+</script>
+</body>
+</html>

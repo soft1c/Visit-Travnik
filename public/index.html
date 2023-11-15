@@ -218,34 +218,38 @@
 
 
 					<script>
+
 						function toggleSelection(item) {
 							console.log("selectao");
 							item.classList.toggle("selected");
 						}
 
 						function submitSelections() {
+							// Dohvat podataka iz input polja
+							const ageElement = document.querySelector('input[name="age"]:checked');
+							const number1 = document.getElementById('number1').value;
+							const number2 = document.getElementById('number2').value;
 
-								// Dohvat podataka iz input polja
-								const age = document.getElementById('age').value;
-								const number1 = document.getElementById('number1').value;
-								const number2 = document.getElementById('number2').value;
+							// Check if ageElement is not null before accessing its value
+							const age = ageElement ? ageElement.value : null;
 
-								// Dohvat odabranih elemenata s klasom "selected"
-								let selectedItems = document.querySelectorAll('.selected');
-								let selectedPreferences = [];
-								console.log("submitovanje");
-								// Iteracija kroz odabrane elemente i dohvat vrijednosti
-								selectedItems.forEach(item => {
-									let h4Element = item.querySelector('h4');
-									if (h4Element) {
-										let preference = h4Element.textContent; // Ako postoji h4 element, dohvati tekst
-										selectedPreferences.push(preference);
-									}
-								});
+							// Dohvat odabranih elemenata s klasom "selected"
+							let selectedItems = document.querySelectorAll('.selected');
+							let selectedPreferences = [];
+							console.log("submitovanje");
 
-								// Kreiranje URL-a sa parametrima
-								//let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
-								//queryParams += `&age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
+							// Iteracija kroz odabrane elemente i dohvat vrijednosti
+							selectedItems.forEach(item => {
+								let h4Element = item.querySelector('h4');
+								if (h4Element) {
+									let preference = h4Element.textContent; // Ako postoji h4 element, dohvati tekst
+									selectedPreferences.push(preference);
+								}
+							});
+
+							// Kreiranje URL-a sa parametrima
+							//let queryParams = selectedPreferences.map(pref => `preference=${encodeURIComponent(pref)}`).join('&');
+							//queryParams += `&age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
 
 							const requestData = {
 								preference: selectedPreferences,
@@ -253,21 +257,23 @@
 								number1,
 								number2,
 							};
-								// Preusmjeravanje na novu stranicu
-								fetch('/search-results',{
-									headers: {
-										'Content-Type': 'application/json',
-									},
-									body: JSON.stringify(requestData),
-								})
-										.then(response=>response.json())
-										.then(data=>{
-											window.location.href = `/result-page?age=${encodeURIComponent(age)}&number1=${encodeURIComponent(number1)}&number2=${encodeURIComponent(number2)}`;
-										})
-										.catch(error=>{
-											console.error('Error submitting selections: ',error);
-										});
-
+							// Preusmjeravanje na novu stranicu
+							fetch('/search-results', {
+								method:'POST',
+								headers: {
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify(requestData),
+							})
+									.then(response => response.json())
+									.then(data => {
+										console.log(data);
+										localStorage.setItem('serverResponse', JSON.stringify(data));
+										window.location.href = '/result-page';
+									})
+									.catch(error => {
+										console.error('Error submitting selections: ', error);
+									});
 						}
 					</script>
 

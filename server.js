@@ -4,6 +4,7 @@ const path = require('path')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const sqlite3=require('sqlite3')
+const async = require("async");
 
 
 let baza=new sqlite3.Database('dogadjaji.db');
@@ -18,7 +19,7 @@ app.use(session({secret:'your_secret_key',resave: false, saveUninitialized:true}
 app.use(express.urlencoded({extended:true}));
 app.use('/css/public/fonts', express.static(path.join(__dirname, 'public', 'fonts')));
 app.use(express.json());
-
+app.use(bodyParser.json());
 const sampleData = [
     { name: 'Ćevapi', type: 'restaurant' },
     { name: 'Kafići', type: 'drinks' },
@@ -121,7 +122,8 @@ function dajLokacije(tip, callback){
 }
 
 
-function dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, tipovi) {
+async function dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, tipovi) {
+    console.log("Trazim sad rezultate");
     let najbolji = [];
     if (!Array.isArray(tipovi)) {
         tipovi = [tipovi];
@@ -162,11 +164,10 @@ function dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, ti
 
     najbolji = najbolji.slice(0, 3);
 
-    najbolji.forEach(item => {
-        console.log(`Lokacija: ${item.lokacija.name}, Rezultat: ${item.rezultat}`);
-    });
+    console.log("Ovo su najbolji",najbolji);
+    return najbolji;
 }
-function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odlaska,tipovi){
+async function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odlaska,tipovi){
     if (!Array.isArray(tipovi)) {
         tipovi = [tipovi];
     }
@@ -213,9 +214,10 @@ function dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska,vrijeme_odlaska,t
     najbolji = najbolji.slice(0, 3);
 
     console.log(najbolji);
+    return najbolji;
 }
 
-function dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tipovi){
+async function dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tipovi){
     let najbolji = [];
     if (!Array.isArray(tipovi)) {
         tipovi = [tipovi];
@@ -262,6 +264,7 @@ function dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,tipovi){
     najbolji.forEach(item => {
         console.log(`Lokacija: ${item.lokacija.name}, Rezultat: ${item.rezultat}`);
     });
+    return najbolji;
 }
 
 
@@ -599,24 +602,28 @@ function getCategory(preference) {
     return foundItem ? foundItem.type : null;
 }
 
-app.post('/search-results', (req, res) => {
+
+app.post('/search-results', async (req, res) => {
     console.log(req.body);
     console.log(req.query);
 
     let preferencije = req.body.preference;
     console.log(preferencije);
-    let vrijeme_odlaska=req.body.number2;
-    let vrijeme_dolaska=req.body.number1;
-    let dob=req.body.age;
-    console.log(dob,vrijeme_dolaska,vrijeme_odlaska);
+    let vrijeme_odlaska = req.body.number2;
+    let vrijeme_dolaska = req.body.number1;
+    let dob = req.body.age;
+    console.log(dob, vrijeme_dolaska, vrijeme_odlaska);
 
     if (typeof preferencije === 'string') {
         preferencije = [preferencije];
     }
     console.log(preferencije);
 
-    const kategorije = [... new Set(preferencije.map(pref=>getCategory(pref)))];
-    kategorije.forEach(kategorija => {
+    const kategorije = [...new Set(preferencije.map(pref => getCategory(pref)))];
+    let rezultati = {};
+
+    // Kreiramo niz obećanja (Promise) koje čekamo
+    const promises = kategorije.map(async (kategorija) => {
         console.log(kategorija);
         // Pronalaženje odgovarajućeg objekta u mapi sampleData
         //const foundItem = sampleData.find(item => item.name === kategorija);
@@ -624,36 +631,58 @@ app.post('/search-results', (req, res) => {
         // Provjera da li je pronađen odgovarajući objekat
         if (kategorija) {
             // Ispisivanje imena preferencije i njenog tipa
-            dajLokacije(kategorija,(err,lokacije)=>{
-                if(err){
-                    console.log('Nije dobro nesto');
-                }else{
-                    //console.log(foundItem);
-                    console.log("Ovdje sam");
-                    if(kategorija==='znamenitosti'){
-                        const znamenitostiPreferencije = preferencije.filter(pref => znamenitosti.some(z => z.name === pref));
-                        dajNajboljuZnamenitost(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,znamenitostiPreferencije);
-                    }else if(kategorija==='drinks'){
-                        const drinksPreferencije = preferencije.filter(pref => pica.some(p => p.name === pref));
-                        dajNajboljiKafic(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,drinksPreferencije);
-                    }else if(kategorija==='restaurant'){
-                        const restaurantPreferencije = preferencije.filter(pref => tabela.some(t => t.name === pref));
-                        dajNajboljiRestoran(lokacije,dob,vrijeme_dolaska,vrijeme_odlaska,restaurantPreferencije);
-                    }else{
-                        console.log("jebi ga");
+            return new Promise((resolve, reject) => {
+                dajLokacije(kategorija, async (err, lokacije) => {
+                    if (err) {
+                        console.log('Nije dobro nesto');
+                        reject(err);
+                    } else {
+                        console.log("Ovdje sam");
+                        if (kategorija === 'znamenitosti') {
+                            const znamenitostiPreferencije = preferencije.filter(pref => znamenitosti.some(z => z.name === pref));
+                            rezultati[kategorija] = await dajNajboljuZnamenitost(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, znamenitostiPreferencije);
+                            console.log("U petlji ", rezultati[kategorija]);
+                            resolve();
+                        } else if (kategorija === 'drinks') {
+                            const drinksPreferencije = preferencije.filter(pref => pica.some(p => p.name === pref));
+                            rezultati[kategorija] = await dajNajboljiKafic(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, drinksPreferencije);
+                            console.log("U petlji ", rezultati[kategorija]);
+                            resolve();
+                        } else if (kategorija === 'restaurant') {
+                            const restaurantPreferencije = preferencije.filter(pref => tabela.some(t => t.name === pref));
+                            rezultati[kategorija] = await dajNajboljiRestoran(lokacije, dob, vrijeme_dolaska, vrijeme_odlaska, restaurantPreferencije);
+                            console.log("U petlji ", rezultati[kategorija]);
+                            resolve();
+                        } else {
+                            console.log("jebi ga");
+                            resolve();
+                        }
                     }
-                }
-            })
-
+                });
+            });
         }
     });
-    // Slanje odgovora
-    res.send('Pogledaj konzolu za rezultate.');
+
+    try {
+        // Čekamo na sve asinkrone pozive prije nego nastavimo
+        await Promise.all(promises);
+
+        // Slanje odgovora
+        console.log("Poslao: ",rezultati.restaurant[0].lokacija);
+        res.json({ status: 'success', message: 'Data received successfully.', results: rezultati });
+    } catch (error) {
+        console.error("Greška prilikom čekanja na asinkrone pozive:", error);
+        res.status(500).json({ status: 'error', message: 'Internal server error.' });
+    }
 });
 
 app.get('/en',(req,res)=>{
     res.sendFile(path.join(__dirname,'public', 'index-en.html'));
 })
+
+app.get('/result-page', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'result-page.html'));
+});
 
 app.get("*", (req, res) => {
     return res.sendStatus(404)
