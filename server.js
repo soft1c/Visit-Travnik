@@ -652,7 +652,7 @@ app.post('/search-results', (req, res) => {
 });
 
 app.get('/en',(req,res)=>{
-    res.redirect('/index-en.html');
+    res.sendFile(path.join(__dirname,'public', 'index-en.html'));
 })
 
 app.get("*", (req, res) => {
