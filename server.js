@@ -5,6 +5,8 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const sqlite3=require('sqlite3')
 const async = require("async");
+const {Client} = require("@googlemaps/google-maps-services-js");
+
 
 
 let baza=new sqlite3.Database('dogadjaji.db');
@@ -13,7 +15,7 @@ let recenzije=new sqlite3.Database('recenzije.db');
 let neodobreneRecenzije=new sqlite3.Database('neodobreneRecenzije.db');
 const app = express()
 
-
+const client =new Client({});
 app.use(express.static('public'));
 app.use(session({secret:'your_secret_key',resave: false, saveUninitialized:true}));
 app.use(express.urlencoded({extended:true}));

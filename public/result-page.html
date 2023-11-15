@@ -16,13 +16,16 @@
   document.addEventListener('DOMContentLoaded', function () {
     // Dohvati spremljeni odgovor iz localStorage
     const storedResponse = localStorage.getItem('serverResponse');
-
+    //console.log(storedResponse);
     if (storedResponse) {
       // Otpakiraj podatke
-      const serverResponse = JSON.parse(storedResponse);
+      let serverResponse = JSON.parse(storedResponse);
 
+      serverResponse=serverResponse.results;
+
+      console.log(serverResponse);
       // Prikazi podatke na stranici
-      displayLocations(serverResponse.results.restaurant);
+      displayLocations(serverResponse);
 
       // Obrisi podatke iz localStorage-a
       localStorage.removeItem('serverResponse');
@@ -31,23 +34,29 @@
     }
   });
 
-  function displayLocations(locations) {
+  function displayLocations(locationsObj) {
     // Dohvati HTML element gdje želite prikazati podatke
     const resultContainer = document.getElementById('result-container');
 
-    // Iteriraj kroz sve lokacije i prikaži podatke
-    locations.forEach(objekt => {
-      console.log(objekt);
-      const locationElement = document.createElement('div');
-      locationElement.innerHTML = `
-            <p>Name: ${objekt.lokacija.name}</p>
-            <p>Type: ${objekt.lokacija.tip}</p>
-            <p>Rating: ${objekt.lokacija.ocjena}</p>
-            <p>Location: ${objekt.lokacija.lokacija}</p>
-            <hr>
-        `;
-      resultContainer.appendChild(locationElement);
-    });
+    // Iteriraj kroz sve ključeve objekta (Hrana, Pice, Znamenitosti)
+    for (const categoryKey in locationsObj) {
+      // Provjeri postoji li atribut za trenutni ključ
+      if (locationsObj.hasOwnProperty(categoryKey) && Array.isArray(locationsObj[categoryKey])) {
+        // Iteriraj kroz sve lokacije unutar trenutne kategorije
+        locationsObj[categoryKey].forEach(location => {
+          location=location.lokacija;
+          // Prikazi podatke o lokaciji
+          const locationElement = document.createElement('div');
+          locationElement.innerHTML = `
+                    <p>Name: ${location.name}</p>
+                    <p>Rating: ${location.ocjena}</p>
+                    <p>Location: ${location.lokacija}</p>
+                    <hr>
+                `;
+          resultContainer.appendChild(locationElement);
+        });
+      }
+    }
   }
 </script>
 </body>
