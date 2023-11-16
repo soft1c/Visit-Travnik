@@ -215,18 +215,31 @@
 	</div>
 	</div>
 <br>
+<br>
+<br>
+<div style="text-align: center">
+<input  type="text" autocomplete="off" id="number1" class="input" placeholder="Vrijeme Dolaska: ">
+<input type="text" autocomplete="off" id="number2" class="input" placeholder="Vrijeme Odlaska: ">
+</div>
+
+
+
+
+<br>
+<br>
+<br>
 <button onclick="submitSelections()">
 	<span>Traži</span>
 </button>
 <br>
-
+<br>
 <script>
 	function toggleSelection(item) {
 		console.log("selectao");
 		item.classList.toggle("selected");
 	}
 
-	function submitSelections() {
+	function submitSelections1() {
 
 		// Dohvat podataka iz input polja
 		const age = document.getElementById('age').value;
@@ -275,6 +288,8 @@
 </script>
 
 
+<h3 style="text-align: center">Dolazeći događaji</h3>
+<br>
 
 
 <div class="container" id="events-container">
@@ -314,8 +329,8 @@
 		const age = selectedAges.length > 0 ? selectedAges[0] : null;
 
 		// Dohvat podataka iz ostalih input polja
-		const number1 = 0;
-		const number2 = 0
+		const number1 = document.getElementById('number1').value;
+		const number2 = document.getElementById('number2').value;
 
 		// Kreiranje URL-a sa parametrima
 		const requestData = {
@@ -344,11 +359,6 @@
 				});
 	}
 </script>
-
-
-
-<h3>Dolazeći događaji</h3>
-
 
 
 
@@ -392,7 +402,7 @@
 						eventMeta.className = 'card-meta mb-2';
 
 						const eventName = document.createElement('h4');
-						eventName.className = 'card-title mt-0';
+						eventName.className = 'card-title';
 						const eventLink = document.createElement('a');
 						eventLink.className = 'text-dark';
 						eventLink.href = event.url;
@@ -401,7 +411,7 @@
 						eventName.appendChild(eventLink);
 
 						const eventDate = document.createElement('small');
-						eventDate.innerHTML = `<i class="far fa-clock"></i> ${event.datum}`;
+						eventDate.innerHTML = ` ${event.datum}`;
 
 						eventBody.appendChild(eventMeta);
 						eventBody.appendChild(eventName);
