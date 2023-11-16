@@ -48,80 +48,96 @@
         width: 100%;
       }
     }
+    .preporuka-container {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .preporuka {
+      width: 30%;
+      height: 90%;
+      background: #ffff;
+      box-shadow: 0 1px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+      padding: 12px 10px;
+      margin: 0 5px; /* Added margin to separate preporuka elements */
+    }
+
+    .preporuka_load {
+      width: 150px;
+      height: 150px;
+      position: relative;
+      float: left;
+      background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0
+      40%, #e5e5e5 48%);
+      border-radius: 50%;
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      animation: load89234 2s infinite;
+    }
+
+    .preporuka_load_extreme_title {
+      width: 100%;
+      height: 50px;
+      position: relative;
+      float: right;
+      border-radius: 5px;
+      background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0
+      40%, #e5e5e5 48%);
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      animation: load89234 2s infinite;
+    }
+
+    .preporuka_load_extreme_descripion {
+      width: 100%;
+      height: 400px;
+      position: relative;
+      float: right;
+      border-radius: 5px;
+      background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0
+      40%, #e5e5e5 48%);
+      margin-top: 10px;
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      animation: load89234 2s infinite;
+    }
+
+    @keyframes load89234 {
+      100% {
+        background-position: -100% 0;
+      }
+    }
   </style>
 </head>
 
 <body>
 <h1>Search Results</h1>
 
-<div id="result-container">
-  <!-- Ovdje će se prikazivati rezultati -->
+<div class="preporuka-container">
+  <div class="preporuka">
+    <div class="preporuka_load"></div>
+    <div class="preporuka_load_extreme_title"></div>
+    <div class="preporuka_load_extreme_descripion"></div>
+  </div>
+
+  <div class="preporuka">
+    <div class="preporuka_load"></div>
+    <div class="preporuka_load_extreme_title"></div>
+    <div class="preporuka_load_extreme_descripion"></div>
+  </div>
+
+  <div class="preporuka">
+    <div class="preporuka_load"></div>
+    <div class="preporuka_load_extreme_title"></div>
+    <div class="preporuka_load_extreme_descripion"></div>
+  </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Dohvati spremljeni odgovor iz localStorage
-    const storedResponse = localStorage.getItem('serverResponse');
-    //console.log(storedResponse);
-    if (storedResponse) {
-      // Otpakiraj podatke
-      let serverResponse = JSON.parse(storedResponse);
 
-      serverResponse = serverResponse.results;
 
-      console.log(serverResponse);
-      // Prikazi podatke na stranici
-      displayLocations(serverResponse);
 
-      // Obrisi podatke iz localStorage-a
-      localStorage.removeItem('serverResponse');
-    } else {
-      console.error('Nema spremljenog odgovora sa servera.');
-    }
-  });
 
-  function displayLocations(locationsObj) {
-    // Dohvati HTML element gdje želite prikazati podatke
-    const resultContainer = document.getElementById('result-container');
-
-    // Iteriraj kroz sve ključeve objekta (Hrana, Pice, Znamenitosti)
-    for (const categoryKey in locationsObj) {
-      // Provjeri postoji li atribut za trenutni ključ
-      if (locationsObj.hasOwnProperty(categoryKey) && Array.isArray(locationsObj[categoryKey]) && locationsObj[categoryKey].length > 0) {
-        // Dodaj container za kategoriju
-        const categoryContainer = document.createElement('div');
-        categoryContainer.classList.add('category-container');
-
-        // Dodaj naslov kategorije
-        const categoryTitle = document.createElement('h2');
-        categoryTitle.textContent = categoryKey;
-        categoryContainer.appendChild(categoryTitle);
-
-        // Iteriraj kroz sve lokacije unutar trenutne kategorije
-        locationsObj[categoryKey].forEach(location => {
-          location = location.lokacija;
-          // Prikazi podatke o lokaciji
-          const locationElement = document.createElement('div');
-          locationElement.innerHTML = `
-                    <p style="color:red">Name: ${location.name}</p>
-                    <p>Rating: ${location.ocjena}</p>
-                    <p><a href="${location.lokacija}" target="_blank">Location</a></p>
-                    <hr>
-                `;
-          categoryContainer.appendChild(locationElement);
-        });
-
-        // Dodaj razmak između kategorija
-        const spacer = document.createElement('div');
-        spacer.classList.add('spacer');
-        categoryContainer.appendChild(spacer);
-
-        // Dodaj container za trenutnu kategoriju u glavni resultContainer
-        resultContainer.appendChild(categoryContainer);
-      }
-    }
-  }
-</script>
 </body>
 
 </html>
