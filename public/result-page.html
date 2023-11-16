@@ -64,21 +64,22 @@
     }
 
     .preporuka_load {
-      width: 150px;
-      height: 150px;
+      width: 100%;
+      height: 200px;
       position: relative;
       float: left;
       background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0
       40%, #e5e5e5 48%);
-      border-radius: 50%;
+      border-radius: 4%;
       background-size: 200% 100%;
       background-position: 100% 0;
-      animation: load89234 2s infinite;
     }
-
     .preporuka_load_extreme_title {
-      width: 100%;
-      height: 50px;
+      width: 70%;
+      height: 30px;
+      margin-right: 15%;
+      margin-left: 15%;
+      margin-top: 10px;
       position: relative;
       float: right;
       border-radius: 5px;
@@ -86,7 +87,6 @@
       40%, #e5e5e5 48%);
       background-size: 200% 100%;
       background-position: 100% 0;
-      animation: load89234 2s infinite;
     }
 
     .preporuka_load_extreme_descripion {
@@ -100,7 +100,9 @@
       margin-top: 10px;
       background-size: 200% 100%;
       background-position: 100% 0;
-      animation: load89234 2s infinite;
+    }
+    h5{
+      text-align: center;margin-top: 7px;font-weight: bold
     }
 
     @keyframes load89234 {
@@ -117,19 +119,25 @@
 <div class="preporuka-container">
   <div class="preporuka">
     <div class="preporuka_load"></div>
-    <div class="preporuka_load_extreme_title"></div>
+    <div class="preporuka_load_extreme_title">
+      <h5>Dzamija prva</h5>
+    </div>
     <div class="preporuka_load_extreme_descripion"></div>
   </div>
 
   <div class="preporuka">
     <div class="preporuka_load"></div>
-    <div class="preporuka_load_extreme_title"></div>
+    <div class="preporuka_load_extreme_title">
+      <h5>Dzamija druga</h5>
+    </div>
     <div class="preporuka_load_extreme_descripion"></div>
   </div>
 
   <div class="preporuka">
     <div class="preporuka_load"></div>
-    <div class="preporuka_load_extreme_title"></div>
+    <div class="preporuka_load_extreme_title">
+      <h5>Dzamija treca</h5>
+    </div>
     <div class="preporuka_load_extreme_descripion"></div>
   </div>
 </div>
