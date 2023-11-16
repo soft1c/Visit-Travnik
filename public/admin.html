@@ -4,19 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Page</title>
+  <link rel="stylesheet" href="/css/linearicons.css">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/magnific-popup.css">
+  <link rel="stylesheet" href="/css/nice-select.css">
+  <link rel="stylesheet" href="/css/animate.min.css">
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-oSNjcXCCNEI7uZgo2FzFv5ViZ5zCFs2UZ5QytwQLvud+pbj4bcP/r5S9VJBv4e9CA" crossorigin="anonymous">
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       margin: 0;
-    }
-
-    h1 {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px;
-      margin: 0;
-      text-align: center;
     }
 
     form {
@@ -115,10 +116,33 @@
     .update-btn:hover {
       background-color: #0056b3;
     }
+    .navbar.fixed-top {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
   </style>
-</head>
 <body>
-<h1>Admin Page</h1>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="img/Logo.png" alt="" height="70px" width="70px">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+        <li ><a href="/admin_login.html">Logout</a></li>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <!-- Add Event Form -->
 <form action="/add_event" method="POST" enctype="multipart/form-data">
@@ -252,7 +276,9 @@
 </div>
 <button onclick="azurirajOcjeneBackend()" class="update-btn">Ažuriraj ocjene</button>
 
-<!-- JavaScript for fetching and displaying recenzije data -->
+
+
+
 <script>
   const recenzijeListContainer = document.getElementById('recenzijeList');
 
@@ -406,10 +432,6 @@
     }
   }
 </script>
-
-<!-- Logout Button -->
-<form action="/admin_login.html">
-  <input type="submit" value="Logout">
-</form>
+<br><br><br>
 </body>
 </html>
