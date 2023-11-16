@@ -378,14 +378,15 @@ app.post('/delete_event', (req, res) => {
     }
 });
 
-app.post('/add_place', (req, res) => {
+app.post('/add_place',upload.single('slika'), (req, res) => {
     const { placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, tip1,tip2,tip3,tip4, lokacija, turisticki_znacaj } = req.body;
     console.log(req.body);
+    const slika = req.file ? `public/img/${req.file.filename}` : '';
     let ocjena_pocetna=0;
     console.log(lokacija);
     lokacije.run(
-        'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, tip1,tip2,tip3,tip4, lokacija, turisticki_znacaj, ocjena) VALUES (?, ?, ?, ?, ?, ?, ?,? ,?, ?, ?, ?, ?, ?,?)',
-        [placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, tip1,tip2,tip3,tip4, lokacija, turisticki_znacaj,ocjena_pocetna],
+        'INSERT INTO lokacije (name, tip, pocetak_radnog_vremena, kraj_radnog_vremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, tip1,tip2,tip3,tip4, lokacija, turisticki_znacaj,slika, ocjena) VALUES (?, ?, ?, ?, ?, ?, ?,? ,?, ?, ?, ?, ?,?, ?,?)',
+        [placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, tip1,tip2,tip3,tip4, lokacija, turisticki_znacaj,slika,ocjena_pocetna],
         (err) => {
             if (err) {
                 console.error(err);

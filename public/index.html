@@ -20,16 +20,31 @@
 	<link rel="stylesheet" href="/css/owl.carousel.css">
 	<link rel="stylesheet" href="/css/main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-oSNjcXCCNEI7uZgo2FzFv5ViZ5zCFs2UZ5QytwQLvud+pbj4bcP/r5S9VJBv4e9CA" crossorigin="anonymous">
+	<style>
+		#language-switcher {
+			display: flex;
+			align-items: center;
+		}
 
+		.flag {
+			margin-right: 10px; /* Prilagodite razmak između zastava prema potrebi */
+			cursor: pointer;
+		}
+	</style>
 </head>
 <body>
 <div class="portfolio-wrap">
 	<header class="default-header">
 		<nav class="navbar navbar-expand-lg  navbar-light">
+
 			<div class="container">
 				<a class="navbar-brand" href="index.html">
 					<img style="height: 70px;width: 70px;margin-top: -15px" src="img/logo.png">
 				</a>
+				<div id="language-switcher">
+					<img style = "width:30px; height:auto" src="img/uk_zastava.jfif" alt="UK Flag" onclick="changeLanguage('en')">
+					<img style="width:30px; height:auto" src="img/bih_zastava.png" alt="BA Flag" onclick="changeLanguage('ba')">
+				</div>
 
 				<div id="google_translate_element"></div>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -463,8 +478,22 @@
 
 	fetchAndDisplayEvents();
 
+	function changeLanguage(lang) {
+		console.log("Changing language to: ", lang);
 
+		// Provjerite da li je jezik definiran
+		if (lang === 'en' || lang === 'ba') {
+			// Preusmjerite na odgovarajuću stranicu
+			window.location.href = lang === 'en' ? '/index-en.html' : '/index.html';
+		} else {
+			console.error("Invalid language:", lang);
+		}
+	}
 </script>
+
+
+
+
 
 
 
