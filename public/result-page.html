@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/main.css">
   <title>Search Results</title>
 
   <style>
@@ -120,8 +121,6 @@
 
 </div>
 
-
-
 </body>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -167,10 +166,12 @@
             location=location.lokacija;
             // Prikazi podatke o lokaciji
             const locationElement = document.createElement('div');
+            locationElement.classList.add("specialcard");
             locationElement.innerHTML = `
-                    <p>Name: ${location.name}</p>
-                    <p>Rating: ${location.ocjena}</p>
-                    <p><a href="${location.lokacija}" target="_blank">Location</a></p>
+                    <p class="text-title" >Naziv: ${location.name}</p>  <img  style="height: 50px; width: 50px;" src="public/img/facebook.png">
+                    <p style="  color: black; font-weight: bold; font-size: 1em;">Ocjena: ${location.ocjena}</p>
+                    <p >Kako pronaci: <a href="${location.lokacija}" target="_blank">Location</a></p>
+                    <p >Dzamije neke razne sa 7 munara</p>
                     <hr>
                 `;
 
