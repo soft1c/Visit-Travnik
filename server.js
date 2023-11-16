@@ -380,8 +380,9 @@ app.post('/delete_event', (req, res) => {
 
 app.post('/add_place',upload.single('slika'), (req, res) => {
     const { placeName, placeType, pocetakRadnogVremena, krajRadnogVremena, prikladnost_za_do_18, prikladnost_za_do_30, prikladnost_za_do_50, prikladnost_za_preko_50, tip1,tip2,tip3,tip4, lokacija, turisticki_znacaj } = req.body;
-    console.log(req.body);
-    const slika = req.file ? `public/img/${req.file.filename}` : '';
+
+    const slika = `public/img/${req.body.slika}`;
+    console.log(slika);
     let ocjena_pocetna=0;
     console.log(lokacija);
     lokacije.run(

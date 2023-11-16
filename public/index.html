@@ -21,14 +21,28 @@
 	<link rel="stylesheet" href="/css/main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-oSNjcXCCNEI7uZgo2FzFv5ViZ5zCFs2UZ5QytwQLvud+pbj4bcP/r5S9VJBv4e9CA" crossorigin="anonymous">
 	<style>
-		#language-switcher {
+		.center-slike {
+			margin-top: 20px;
 			display: flex;
-			align-items: center;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 10px;
 		}
 
-		.flag {
-			margin-right: 10px; /* Prilagodite razmak između zastava prema potrebi */
+		.center-slike .single-portfolio {
+			width: calc(33.33% - 10px); /* Postavite željenu širinu slike na desktopu */
 			cursor: pointer;
+			transition: transform 0.3s ease-in-out;
+		}
+
+		.center-slike .single-portfolio:hover {
+			transform: scale(1.1);
+		}
+
+		@media (max-width: 767px) {
+			.center-slike .single-portfolio {
+				width: calc(50% - 10px); /* Postavite željenu širinu slike na mobilnim uređajima */
+			}
 		}
 	</style>
 </head>
@@ -179,7 +193,7 @@
 						</div>
 					</div>
 					<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-						<div  class="item" onclick="toggleSelection(this)">
+						<div  class="item " onclick="toggleSelection(this)">
 							<img src="img/disco.jpg" alt="Work 1" class="img-fluid">
 							<div class="p-inner">
 								<h4 >Zabava</h4>
@@ -195,40 +209,57 @@
 
 <h2 style="margin-top: -130px; text-align: center">Izaberite dob:</h2>
 <br>
-<div  style="margin-left: 5%; margin-right: 5%;" class="center-slike">
-	<div style="height: 200px; width: 200px" class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-		<div  style="width: 200px; height: 200px; border-radius: 20px;cursor: pointer" class="item" onclick="toggleSelection(this)">
-			<img style="width:100%; height: 100%; border-radius: 15px;" src="img/ispod18.png" alt="Work 1" class="img-fluid">
-			<div class="p-inner">
-				<h4 style="text-align: center;" >Do 18 godina</h4>
+<div  class="center-slike">
+	<div class="row grid">
+			<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 ">
+					<div  style="cursor: pointer" class="item" onclick="toggleSelection(this)">
+					<img  style="height:75%;width:auto;border-radius:10px" src="img/ispod18.png" alt="Work 1" class="img-fluid">
+					<div class="p-inner">
+						<h4 style="text-align: center;" >Do 18 godina</h4>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-	<div style="height: 200px; width: 200px"" class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-	<div  style="width: 200px; height: 200px; border-radius: 20px;cursor: pointer" class="item" onclick="toggleSelection(this)">
-		<img style="width:100%; height: 100%; border-radius: 15px;" src="img/18do30.png" alt="Work 1" class="img-fluid">
+	<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 ">
+				<div  style="cursor: pointer" class="item" onclick="toggleSelection(this)">
+					<img  style="height:75%;width:auto;border-radius:10px" src="img/18do30.png" alt="Work 1" class="img-fluid">
 			<div class="p-inner">
 				<h4 style="text-align: center;" >Do 30 godina</h4>
 			</div>
 		</div>
 	</div>
-	<div style="height: 200px; width: 200px" class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-		<div  style="width: 200px; height: 200px; border-radius: 20px;cursor: pointer" class="item" onclick="toggleSelection(this)">
-			<img style="width:100%; height: 100%; border-radius: 15px;" src="img/30do50.png" alt="Work 1" class="img-fluid">
+	<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 ">
+		<div  style="cursor: pointer" class="item" onclick="toggleSelection(this)">
+			<img  style="height:75%;width:auto;border-radius:10px" src="img/30do50.png" alt="Work 1" class="img-fluid">
 			<div class="p-inner">
 				<h4 style="text-align: center;" >Do 50 godina</h4>
 			</div>
 		</div>
 	</div>
-	<div style="height: 200px; width: 200px" class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 all pice">
-		<div  style="width: 200px; height: 200px; border-radius: 20px;cursor: pointer" class="item" onclick="toggleSelection(this)">
-			<img style="width:100%; height: 100%; border-radius: 15px;" src="img/Iznad50.png" alt="Work 1" class="img-fluid">
+	<div class="single-portfolio col-6 col-xxl-3 col-xl-3 col-lg-6 col-md-3 col-sm-3 col-xs-4 ">
+		<div style="cursor: pointer" class="item" onclick="toggleSelection(this)">
+			<img  style="height:75%;width:auto; border-radius:10px" src="img/Iznad50.png" alt="Work 1" class="img-fluid">
 			<div class="p-inner">
 				<h4 style="text-align: center;" >Preko 50 godina</h4>
 			</div>
 		</div>
 	</div>
 	</div>
+	</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
