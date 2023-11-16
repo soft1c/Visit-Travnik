@@ -618,7 +618,7 @@ function getCategory(preference) {
 app.post('/search-results', async (req, res) => {
     console.log(req.body);
     console.log(req.query);
-
+w
     let preferencije = req.body.preference;
     console.log(preferencije);
     let vrijeme_odlaska = req.body.number2;
