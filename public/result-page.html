@@ -1,10 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Search Results</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    #result-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    #result-container p {
+      line-height: 1.5;
+      color: #666;
+    }
+
+    #result-container hr {
+      border: 0.5px solid #ddd;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 736px) {
+      #result-container {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
 <h1>Search Results</h1>
 
@@ -21,7 +67,7 @@
       // Otpakiraj podatke
       let serverResponse = JSON.parse(storedResponse);
 
-      serverResponse=serverResponse.results;
+      serverResponse = serverResponse.results;
 
       console.log(serverResponse);
       // Prikazi podatke na stranici
@@ -41,23 +87,41 @@
     // Iteriraj kroz sve ključeve objekta (Hrana, Pice, Znamenitosti)
     for (const categoryKey in locationsObj) {
       // Provjeri postoji li atribut za trenutni ključ
-      if (locationsObj.hasOwnProperty(categoryKey) && Array.isArray(locationsObj[categoryKey])) {
+      if (locationsObj.hasOwnProperty(categoryKey) && Array.isArray(locationsObj[categoryKey]) && locationsObj[categoryKey].length > 0) {
+        // Dodaj container za kategoriju
+        const categoryContainer = document.createElement('div');
+        categoryContainer.classList.add('category-container');
+
+        // Dodaj naslov kategorije
+        const categoryTitle = document.createElement('h2');
+        categoryTitle.textContent = categoryKey;
+        categoryContainer.appendChild(categoryTitle);
+
         // Iteriraj kroz sve lokacije unutar trenutne kategorije
         locationsObj[categoryKey].forEach(location => {
-          location=location.lokacija;
+          location = location.lokacija;
           // Prikazi podatke o lokaciji
           const locationElement = document.createElement('div');
           locationElement.innerHTML = `
-                    <p>Name: ${location.name}</p>
+                    <p style="color:red">Name: ${location.name}</p>
                     <p>Rating: ${location.ocjena}</p>
-                    <p>Location: ${location.lokacija}</p>
+                    <p><a href="${location.lokacija}" target="_blank">Location</a></p>
                     <hr>
                 `;
-          resultContainer.appendChild(locationElement);
+          categoryContainer.appendChild(locationElement);
         });
+
+        // Dodaj razmak između kategorija
+        const spacer = document.createElement('div');
+        spacer.classList.add('spacer');
+        categoryContainer.appendChild(spacer);
+
+        // Dodaj container za trenutnu kategoriju u glavni resultContainer
+        resultContainer.appendChild(categoryContainer);
       }
     }
   }
 </script>
 </body>
+
 </html>
